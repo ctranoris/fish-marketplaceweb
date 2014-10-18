@@ -293,6 +293,12 @@ appControllers.controller('AppAddController', function($scope, $location,
 	}
 
 	$scope.submitNewApp = function submit() {
+		
+		var catidsCommaSeparated = '';
+		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
+			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
+		 });
+		 
 		return $http({
 			method : 'POST',
 			url : '/baker/services/api/repo/users/'+$scope.app.owner.id+'/apps/',
@@ -305,7 +311,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 				longDescription: $scope.app.longDescription,
 				version: $scope.app.version,
 				uploadedAppIcon: $scope.app.uploadedAppIcon,
-				categoryid: $scope.app.category.id,
+				categories: catidsCommaSeparated,
 				//file : $scope.file
 			},
 			transformRequest : formDataObject
@@ -340,7 +346,14 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 	 //console.log("WILL EDIT ApplicationMetadata with ID "+$routeParams.id);
 	
 	 $scope.submitUpdateApp = function submit() {
-		 cfpLoadingBar.start();
+		 //cfpLoadingBar.start();
+		 var catidsCommaSeparated = '';
+		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
+			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
+		 });
+		 	
+		 	
+		 	
 			return $http({
 				method : 'PUT',
 				url : '/baker/services/api/repo/apps/'+$routeParams.id,
@@ -355,7 +368,7 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 					shortDescription: $scope.app.shortDescription,
 					longDescription: $scope.app.longDescription,
 					version: $scope.app.version,
-					categoryid: $scope.app.category.id,
+					categories: catidsCommaSeparated,
 					uploadedAppIcon: $scope.app.uploadedAppIcon,
 					//file : $scope.file
 				},
@@ -368,26 +381,32 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 
     $scope.loadApp=function(cats){
     	var myapp = ApplicationMetadata.get({id:$routeParams.id}, function() {
-    		//console.log("loadApp appl.name "+myapp.name);
-    		//console.log("loadApp cats "+cats.length);
-   	 		//console.log("loadApp appl.category "+cats);
-   	 		var selected_cat=0;
-   	 		angular.forEach(cats, function(categ, key) {
-   	    		//console.log("key= "+key+", categ.id="+categ.id+", categ.name="+categ.name);
-   	    		if (myapp.category)
-   	    			if (myapp.category.id === categ.id)
-   	    				selected_cat = key;
-   	 		});
-   	 		//This trick is to Synchronize selection in view for the two models form the API to current
+    		
+    		var categoriesToPush=[];
+    		angular.forEach(myapp.categories, function(myappcateg, myappcategkey) {
+	   	    		//console.log("Examining == > myappcategkey= "+myappcategkey+", myappcateg.id="+myappcateg.id+", myappcateg.name="+myappcateg.name);
+	   	    		
+	   	    		angular.forEach(cats, function(categ, key) {
+		   	    		if (myappcateg.id === categ.id){
+		   	    			categoriesToPush.push(categ);
+		   	    		}
+	   	    		});
+	   	 	});
+    		
+    		myapp.categories=[];//clear everything
+    		//now re add the categories to synchronize with local model
+    		angular.forEach(categoriesToPush, function(cat, key) {
+    			myapp.categories.push(cat);
+	   	 	});	 
+    		
+    		angular.forEach(myapp.categories, function(myappcateg, myappcategkey) {
+   	    		console.log(" == >myappcategkey= "+myappcategkey+", myappcateg.id="+myappcateg.id+", myappcateg.name="+myappcateg.name);
+	   	 	});	 		
    	 		
-   	 		myapp.category = cats[selected_cat]; 
    	 		$scope.app=myapp;    
     		
     	});     
-    		      
-   	 	//appl.category = $scope.categories[appl.category];
-        
-    	//$scope.app=ApplicationMetadata.get({id:$routeParams.id});        
+    		          
    	 	
     };
 
@@ -582,6 +601,12 @@ appControllers.controller('BunAddController', function($scope, $location,
 	}
 
 	$scope.submitNewBun = function submit() {
+		
+		var catidsCommaSeparated = '';
+		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
+			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
+		 });
+		 
 		return $http({
 			method : 'POST',
 			url : '/baker/services/api/repo/users/'+$scope.bun.owner.id+'/buns/',
@@ -595,7 +620,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 				version: $scope.bun.version,
 				uploadedBunIcon: $scope.bun.uploadedBunIcon,
 				uploadedBunFile: $scope.bun.uploadedBunFile,
-				categoryid: $scope.bun.category.id,
+				categories: catidsCommaSeparated,
 				//file : $scope.file
 			},
 			transformRequest : formDataObject
@@ -615,7 +640,12 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 
 	
 	 $scope.submitUpdateBun = function submit() {
-		 cfpLoadingBar.start();
+
+		 var catidsCommaSeparated = '';
+		 angular.forEach ( $scope.bun.categories, function(categ, categkey) {
+			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
+		 });
+		 
 			return $http({
 				method : 'PUT',
 				url : '/baker/services/api/repo/buns/'+$routeParams.id,
@@ -630,7 +660,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 					shortDescription: $scope.bun.shortDescription,
 					longDescription: $scope.bun.longDescription,
 					version: $scope.bun.version,
-					categoryid: $scope.bun.category.id,
+					categories: catidsCommaSeparated,
 					uploadedBunIcon: $scope.bun.uploadedBunIcon,
 					uploadedBunFile: $scope.bun.uploadedBunFile,
 					//file : $scope.file
@@ -644,18 +674,25 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 
     $scope.loadBun=function(cats){
     	var mybun = BunMetadata.get({id:$routeParams.id}, function() {
-    		console.log("loadBun bun.name "+mybun.name);
-    		console.log("loadBun cats "+cats.length);
-   	 		//console.log("loadApp appl.category "+cats);
-   	 		var selected_cat=0;
-   	 		angular.forEach(cats, function(categ, key) {
-   	    		//console.log("key= "+key+", categ.id="+categ.id+", categ.name="+categ.name);
-   	    		if (mybun.category)
-   	    			if (mybun.category.id === categ.id)
-   	    				selected_cat = key;
-   	 		});
-   	 		mybun.category = cats[selected_cat]; //This trick is to Synchronize selection in view for the two models form the API to current
-   	 		$scope.bun=mybun;    
+
+    		var categoriesToPush=[];
+	   	 	angular.forEach(mybun.categories, function(mybuncateg, mybuncategkey) {
+		    		
+		    		angular.forEach(cats, function(categ, key) {
+	   	    		if (mybuncateg.id === categ.id){
+	   	    			categoriesToPush.push(categ);
+	   	    		}
+		    		});
+		 	});
+			
+	   	 	mybun.categories=[];//clear everything
+			//now re add the categories to synchronize with local model
+			angular.forEach(categoriesToPush, function(cat, key) {
+				mybun.categories.push(cat);
+			 	});	 
+			
+			
+			$scope.bun=mybun;   
     		
     	});     
     		      

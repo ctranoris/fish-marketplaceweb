@@ -179,7 +179,7 @@ p {
 }
 
 .appTile {
-	height: 280px;
+	height: 350px;
 	text-align: left;
 }
 
@@ -198,7 +198,7 @@ p {
 
 
 .tileimg{	
-	min-height: 160px;
+	min-height: 180px;
 	
 }
 

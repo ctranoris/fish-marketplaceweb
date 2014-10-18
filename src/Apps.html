@@ -10,7 +10,7 @@
 				<br>
 				<br>
 				<table id="grid1" tr-ng-grid="" class="usersGrid" items="apps" page-items="10"
-					fields="['id', 'name','shortDescription','longDescription', 'category.name', 'owner.username']">
+					fields="['id', 'name','shortDescription','longDescription', 'owner.username']">
 					
 					<thead>
 						<tr>
@@ -18,10 +18,18 @@
 							<th field-name="name" display-name="Name"></th>
 							<th field-name="shortDescription" display-name="Teaser"></th>
 							<th field-name="longDescription" display-name="Description"></th>
+							<th>
+			                    <div class="tr-ng-title">
+			                        Categories
+			                    </div>
+			                </th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
+							<td nowrap="nowrap" >
+							<div ng-repeat="appcat in gridItem.categories">{{appcat.name}} </div>
+							</td>
 							<td nowrap="nowrap" >
 								<img width="120px" src="{{gridItem.iconsrc}}"> 
 								<p><strong>UUID: {{gridItem.uuid}}</strong><br></p>

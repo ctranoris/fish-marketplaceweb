@@ -11,6 +11,7 @@
 			</div>
 			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 				<h1 id="headerTitle">{{bun.name}} </h1>
+				<p><span ng-repeat="buncat in bun.categories"><span class="label label-info">{{buncat.name}}</span>&nbsp;&nbsp;</span></p>
 				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="{{bun.packageLocation}}"> 
 				<i class="fa fa-download fa-2x pull-left"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;Package&nbsp;&nbsp;&nbsp;&nbsp;</b><br><small>Version: {{bun.version}}</small></a>
 				<h3>{{bun.shortDescription}}</h3>

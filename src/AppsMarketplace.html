@@ -31,19 +31,25 @@
 					
 					<div ng-repeat="app in apps | filter:search" class="col-xs-12 col-sm-12 col-md-6 col-lg-4 appTile animate-repeat">
 					
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 appTitle">{{app.name}}
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 appTitle">
+							{{app.name}}<p>
+							<small>by {{app.owner.username}}, {{app.owner.organization}}</small></p>
 						</div>
 						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 tileimg" style="background: url({{app.iconsrc}}) no-repeat center center;">
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-							<small>by {{app.owner.username}}, {{app.owner.organization}}</small>
-							<br><small>Version: {{app.version}}</small>
+							<small>Version: {{app.version}}</small>
+							<br>
+							<small><span ng-repeat="appcat in app.categories">
+							<span class="label label-info">{{appcat.name}}</span>&nbsp;&nbsp;</span></small>
+							<br>
 							<br>
 							<p>{{app.shortDescription}}</p>
 							<p>
 								<a class="btn btn-default" href="#/app_view/{{app.id}}" role="button">View details</a>
 							</p>
 						</div>
+						
 					</div>
 					
 				</div>	

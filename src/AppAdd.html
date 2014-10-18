@@ -41,9 +41,9 @@
 					
 					
 					<div class="form-group">
-						<label for="app.category" class="col-sm-2 control-label">Category</label>
+						<label for="app.category" class="col-sm-2 control-label">Category ( <span ng-repeat="appcat in app.categories">{{appcat.name}} </span> )</label>
 						<div class="col-sm-10">
-							<select class="form-control" ng-model="app.category" ng-options="cat.name for cat in categories" >
+							<select multiple class="form-control" ng-model="app.categories" ng-options="cat.name for cat in categories" >
 							</select>
 						</div>
 					</div>

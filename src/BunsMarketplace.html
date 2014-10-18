@@ -30,14 +30,19 @@
 				<div class="row example-animate-container" >
 					
 					<div ng-repeat="bun in buns | filter:search" class="col-xs-12 col-sm-12 col-md-6 col-lg-4 appTile animate-repeat">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 appTitle">{{bun.name}}
+						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 appTitle">
+						{{bun.name}}
+						<p><small>by {{bun.owner.username}}, {{bun.owner.organization}}</small></p>
 						</div>
 						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 tileimg" style="background: url({{bun.iconsrc}}) no-repeat center center;">
 						</div>
-						<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-							
-							<small>{{bun.owner.username}}, {{bun.owner.organization}}</small>
-							<br><small>Version: {{bun.version}}</small>
+						<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">							
+							<small>Version: {{bun.version}}</small>
+							<br>
+							<small><span ng-repeat="buncat in bun.categories">
+							<span class="label label-info">{{buncat.name}}</span>&nbsp;&nbsp;</span></small>
+							<br>
 							<br>
 							<p>{{bun.shortDescription}}</p>
 							<p>

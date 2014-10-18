@@ -11,6 +11,7 @@
 			</div>
 			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 				<h1 id="headerTitle">{{app.name}} </h1>
+				<p><span ng-repeat="appcat in app.categories"><span class="label label-info">{{appcat.name}}</span>&nbsp;&nbsp;</span></p>
 				<br/>
 				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/app_deploy"> <i class="fa fa-cloud-upload fa-2x pull-left"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;Deploy&nbsp;&nbsp;&nbsp;&nbsp;</b><br><small>Version: {{app.version}}</small></a>
 				<h3>{{app.shortDescription}}</h3>
