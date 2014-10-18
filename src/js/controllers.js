@@ -603,7 +603,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 	$scope.submitNewBun = function submit() {
 		
 		var catidsCommaSeparated = '';
-		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
+		 angular.forEach ( $scope.bun.categories, function(categ, categkey) {
 			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
 		 });
 		 
