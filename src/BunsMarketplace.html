@@ -1,0 +1,59 @@
+<div class="page-header">
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 ">
+				<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{'active': isNoneSelected(), 'shadowed-dark': isNoneSelected(category) }">
+							<a ng-click="filterCategory(-1)"> <span
+							class="badge pull-right">{{bunsTotalNumber}}</span> All
+					</a></li>
+					<li ng-class="{'active': isActive(category), 'shadowed-dark': isActive(category) }" 
+						ng-repeat="category in categories "><a ng-click="filterCategory(category)"> <span
+							class="badge pull-right">{{category.bunscount}}</span>{{category.name}}
+					</a></li>
+				</ul>
+
+			</div>
+			<div class="col-xs-9 col-sm-9 col-md-10 col-lg-10">
+				<div class="jumbotron shadowed">
+					<h2>Buns!</h2>
+					<p>Browse available buns: software packages that are used by applications, ready to be deployed to target machines!</p>
+				</div>
+				
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" ></div>
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" >
+					<input  type="text" class="form-control"  ng-model="search.name" placeholder="Filter buns..." />
+					<h1></h1>
+				</div>
+					
+				<div class="row example-animate-container" >
+					
+					<div ng-repeat="bun in buns | filter:search" class="col-xs-12 col-sm-12 col-md-6 col-lg-4 appTile animate-repeat">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 appTitle">{{bun.name}}
+						</div>
+						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 tileimg" style="background: url({{bun.iconsrc}}) no-repeat center center;">
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+							
+							<small>{{bun.owner.username}}, {{bun.owner.organization}}</small>
+							<br><small>Version: {{bun.version}}</small>
+							<br>
+							<p>{{bun.shortDescription}}</p>
+							<p>
+								<a class="btn btn-default" href="#/bun_view/{{bun.id}}" role="button">View details</a>
+							</p>
+						</div>
+					</div>
+					
+				</div>	
+				
+				<div class="col-12 col-sm-12 col-lg-12">	
+					<li class="animate-repeat" ng-if="results.length == 0">
+					<strong>No results found...</strong></li>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

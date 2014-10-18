@@ -1,0 +1,234 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: 'Open Sans', sans-serif;
+  padding: 40px 0;
+  /*TODO: Use media queries to load smallest image that will fill screen.*/
+  /*background: url(http://www.wallpaperup.com/uploads/wallpapers/2014/05/20/355030/big_thumb_493d117744b6f0d01da7b16f25da1e82.jpg) no-repeat center top fixed;
+  */
+  background-color: white;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+
+h1 {
+	font-size: 50px;	
+}
+
+p {
+	font-size: 16px;	
+}
+
+.shadowed{
+	text-shadow: 4px 4px 6px #aaa;
+}
+
+.shadowed-dark{
+	text-shadow: 4px 4px 6px #513838;
+}
+
+
+.container {
+    padding-left:30px;
+    padding-right:30px;
+}
+.page-header{
+	border-style:none;
+}
+
+.overlay {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.6);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  /*-webkit-filter: blur(5px);*/
+}
+
+
+.form-signin {
+  color: black;
+  font-family: 'Maven Pro', sans-serif;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox { font-weight: normal; }
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 1.25em;
+}
+.form-signin .form-control:focus { z-index: 2; }
+
+.rotate-45-left {
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.rotate-45-right {
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.footer {
+  font-size: .75em;
+  margin-top: 20px;
+}
+.header {
+  font-family: 'Maven Pro', sans-serif;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.loading {
+  color: black;
+  padding: 45px 15px;
+  /*background: #eee;*/
+  font-family: 'Maven Pro', sans-serif;
+  text-align: center;
+}
+
+
+.container-fluid{
+	
+}
+
+
+.navbar-default {
+	background-color: rgba(245, 245, 245, 0.93);
+	color: #ffffff;
+}
+
+
+.section {	
+	background-color: white;	
+}
+
+.section-signup {	
+	color: #FFFFFF;	
+	background: url('../images/loginlayer_background.PNG') no-repeat center center #aeaeae; 
+	margin-top:10px;
+}
+
+.section-teaser-apps {	
+	background-color: #989DC3;
+	color:#FCFCFF;
+}
+
+.app-tile {
+	border: #cecece; 
+	background-color: white;
+	border-width: 1px;
+	border-style: solid;
+	padding: 5px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 9px #4A4A4B;
+	height: 400px;
+	text-align: center;
+	
+}
+
+.usersGrid {
+    width: 100%;
+    height: 400px;
+}
+
+
+/*
+* override the default CSS as an example
+*/
+#loading-bar .bar {
+	background: #7EADDB;
+  	height: 10px;
+}
+
+#loading-bar-spinner{
+	
+	top: 60px;
+	
+}
+
+#loading-bar-spinner .spinner-icon {
+	border-top-color: #6589AB;
+	border-left-color: #7EADDB;
+	width:36px;
+	height:36px;
+  	border-radius: 25px;
+}
+
+
+#loading-bar .peg {
+	-moz-box-shadow: #2c3e50 1px 0 6px 1px;
+	-ms-box-shadow: #2c3e50 1px 0 6px 1px;
+	-webkit-box-shadow: #2c3e50 1px 0 6px 1px;
+	box-shadow: #2c3e50 1px 0 11px 1px;
+}
+
+.appIconMainScreen {
+	text-align: center;	
+}
+
+.appTile {
+	height: 280px;
+	text-align: left;
+}
+
+.appTitle{
+	font-size: 26px;	
+	padding-left: 0px;
+	
+    border-bottom: rgb(238, 207, 207);
+    border-bottom-style: dotted;
+    border-bottom-width: 1px;
+	margin-bottom : 5px;
+	padding-bottom : 5px;
+	
+}
+
+
+
+.tileimg{	
+	min-height: 160px;
+	
+}
+
+
+
+
+.example-animate-container {
+  background:white;
+}
+
+.animate-repeat {
+}
+
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity:0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+

@@ -1,0 +1,69 @@
+<div class="page-header" >
+	<div class="container" autoscroll="true">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1 id="headerTitle">Edit Application</h1>
+				<h3>by user: {{app.owner.username}}</h3>
+
+				<form class="form-horizontal" name="form" role="form" ng-submit="submitUpdateApp()" id="updateApplicationForm">
+					<div class="form-group">
+						<label for="app.name" class="col-sm-2 control-label">Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  ng-model="app.name" value="" placeholder="name..." />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="app.version" class="col-sm-2 control-label">Version</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  ng-model="app.version" value="" placeholder="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="app.shortDescription" class="col-sm-2 control-label">Teaser</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  ng-model="app.shortDescription" value="" placeholder="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="app.longDescription" class="col-sm-2 control-label">Description</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  ng-model="app.longDescription" value="" placeholder="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="app.uploadedAppIcon" class="col-sm-2 control-label">Logo</label>
+						<div class="col-sm-10">
+							<input type="file" class="form-control" name="uploadedAppIcon"  file-model="app.uploadedAppIcon" placeholder="" />
+							<p class="help-block">Select logo image</p>
+							
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="app.category" class="col-sm-2 control-label">Category ({{app.category.name}})</label>
+						<div class="col-sm-10">
+							<select class="form-control" ng-model="app.category" ng-options="cat.name for cat in categories" >
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="app.category" class="col-sm-2 control-label">Category ({{app.category.name}})</label>
+						<div class="col-sm-10">
+							<select multiple class="form-control" ng-model="app.category" ng-options="cat.name for cat in categories" >
+							</select>
+						</div>
+					</div>
+					
+                  
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<input class="btn btn-default" type="submit" value="Save" />
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>

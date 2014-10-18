@@ -1,0 +1,26 @@
+<div class="page-header" >
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1 id="headerTitle">Add new Subscribed Machine</h1>
+
+				<form class="form-horizontal" role="form" ng-submit="addSubscribedMachine()" id="addSubscribedMachinesForm">
+					<input type="hidden" name="userid" value="" />
+					<div class="form-group">
+						<label for="subscribedmachine.url" class="col-sm-2 control-label">URL</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  ng-model="subscribedmachine.url" value="" placeholder="URL of machine..." />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<input class="btn btn-default" type="submit" value="Save" />
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,47 @@
+<div class="page-header">
+	<h1>
+		Bun Marketplace <br> <small>View Buns from the Baker
+			marketplace, so that you can install them into your machine</small>
+	</h1>
+	<h2>{{lalakis}}</h2>
+</div>
+
+<div>
+
+	<table class='table table-bordered table-condensed '>
+		<colgroup span="9"></colgroup>
+		<tbody>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Status</th>
+				<th nowrap>Version <br> (Installed Version)
+				</th>
+				<th>shortDescription</th>
+				<th>longDescription</th>
+				<th>Image</th>
+				<th>owner</th>
+				<th>action</th>
+			</tr>
+			<tr ng-repeat="bun in buns">
+			
+				<td>{{ bun.id }}</td>
+				<td>{{ bun.name }}</td>
+				<td><p><span class="label label-default" id="{{'bunStatusLabel'+ bun.id }}">...</span></p>
+	            	<button type="button" 
+	            		id="{{ 'uninstBtn'+bun.id }}" 
+	            		style="display:none;" 
+	            		class=" btn btn-primary" 
+	            		NEXTACTION="UNINSTALL" 
+	            		onClick="execInstallButton({{ bun.id}}, '{{bun.uuid}}', true);" >Uninstall</button>
+            	 	</td>
+            	<td nowrap>{{ bun.version }}<br><div id="installedVersion{{bun.id}}"></div></td> 
+	            <td>{{bun.shortDescription }}</td> 
+	            <td>{{bun.longDescription }}</td>
+	            <td><img width="80px" src="{{bun.iconsrc}}"></td>
+	            <td nowrap >{{ bun.owner.username }}<br>({{bun.owner.organization}}</td> 
+			</tr>
+		</tbody>
+	</table>
+
+</div>

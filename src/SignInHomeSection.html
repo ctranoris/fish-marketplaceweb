@@ -1,0 +1,55 @@
+<div class="section section-signup" ng-controller="LoginCtrl">
+	<div  class="container">
+		<div class="row shadowed-dark" >
+			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+				<h1>&nbsp;</h1>
+				<h2>
+					Welcome to FI-STAR Application Marketplace!
+				</h2>
+				<p >Use the fields on the right to login
+					to the Application Marketplace and easily deploy application over 
+					the FI-STAR and FI-WARE infrastructure!</p>
+				
+				
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<h1>Sign In</h1>
+				<p >Use the following fields to sign in Marketplace</p>
+				<div class="alert alert-danger" ng-show="loginError">Username and/or Password Incorrect</div>
+  
+				<form ng-submit="login()">
+					<div  class="form-group">
+						<input class="form-control" type="text" ng-model='user.username' placeholder="username" />
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control"  name="password"  ng-model='user.password'
+									placeholder="Your Marketplace password"/>
+					</div>
+					 <button type="submit" class="btn btn-default">Sign In</button> or <a style="color: white;" href="#/signup" ><b>Sign up</b> for Marketplace!</a>
+					
+					<h1>&nbsp;</h1>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div ng-show="!loggedIn" class="section" >
+	<div  class="container">
+			<div class="row">
+				<!--  ------------------------  START CONTENT      ------------------------      -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<h1>&nbsp;</h1>
+					<h1 class="shadowed">Deploy applications the easy way!</h1>
+					<p>Access, create
+						and share applications over the FI-STAR and FI-WARE infrastructure!</p>
+					<h1>&nbsp;</h1>
+				</div>
+				
+			
+			</div>
+			<!--  ------------------------  END CONTENT      ------------------------      -->
+	</div>
+</div>

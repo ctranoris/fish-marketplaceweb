@@ -1,0 +1,43 @@
+<div class="page-header" >
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1>All registered available Buns</h1>
+				<h3>View and manage system buns</h3>
+				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/bun_add"> 
+				<i class="fa fa-cogs fa-2x pull-left"></i>&nbsp;&nbsp;Create New<br>Bun</a>
+				<br>
+				<br>
+				<table id="grid1" tr-ng-grid="" class="usersGrid" items="buns" page-items="10"
+					fields="['id', 'name','shortDescription','longDescription', 'category.name', 'owner.username']">
+					
+					<thead>
+						<tr>
+							<th field-name="id" display-name="Id" cell-width="5em"display-align="right"></th>
+							<th field-name="name" display-name="Name"></th>
+							<th field-name="shortDescription" display-name="Teaser"></th>
+							<th field-name="longDescription" display-name="Description"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="{{gridItem.packageLocation}}">Package</td>
+							<td nowrap="nowrap" >
+								<img width="120px" src="{{gridItem.iconsrc}}"> 
+								<p><strong>UUID: {{gridItem.uuid}}</strong><br></p>
+								<p><strong>Version: {{gridItem.version}}</strong><br></p>
+								<p>Date created: <strong>{{gridItem.dateCreated| date:'medium'}}</strong></p>
+								<p>Last update: <strong>{{gridItem.dateUpdated | date:'medium' }}</strong></p>
+								<a class="btn btn-danger" ng-click="deleteBun(gridItem, gridItem.id)"><i class="fa fa-trash-o "></i></a>
+								<a class="btn btn-primary" ng-href="#/bun_edit/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>									
+								<a class="btn btn-info" ng-href="#/bun_view/{{gridDisplayItem.id}}"><i class="fa fa-info-circle "></i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</div>

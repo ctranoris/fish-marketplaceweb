@@ -1,0 +1,27 @@
+<div class="page-header" >
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1>Categories</h1>
+				<h3>View and manage system Categories</h3>
+				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/add_category"> 
+				<i class="fa fa-sitemap fa-2x pull-left"></i>&nbsp;&nbsp;Create New<br>Category</a>
+				<br>
+				<br>
+				<table id="grid1" tr-ng-grid="" class="usersGrid" items="categories"
+					fields="['id', 'name' ]">
+					<tbody>
+						<tr>
+							<td nowrap="nowrap">
+								<a class="btn btn-danger" ng-click="deleteCategory(gridItem, gridItem.id)"><i class="fa fa-trash-o "></i></a>
+								<a class="btn btn-primary" ng-href="#/edit_category/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</div>

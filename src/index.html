@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<title>FI-STAR Application Marketplace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- THIS IS FOR Proper scaling on iPad :-) -->
+
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-resource.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-cookies.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-animate.min.js"></script>
+
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="js/ngDialog.js"></script>
+<link rel="stylesheet" href="css/ngDialog.css">
+<link rel="stylesheet" href="css/ngDialog-theme-default.css">
+<link rel="stylesheet" href="css/ngDialog-theme-plain.css">
+
+<link rel="css/stylesheet" href="css/trNgGrid.min.css" />
+<script src="js/trNgGrid.min.js"></script>
+
+
+
+<link rel="stylesheet" href="css/loading-bar.css" />
+<link rel="stylesheet" href="css/style.css">
+
+<script src="js/controllers.js"></script>
+<script src="js/services.js"></script>
+<script src="js/bakerapp.js"></script>
+
+
+
+<script src="js/loading-bar.js"></script>
+
+
+</head>
+<body  ng-app='bakerapp'>
+	<div class="slide-animate" ng-include="'menu.html'"></div>
+
+	<div id="main-content" class="content" ng-view autoscroll="true">
+	</div>
+	
+
+<div ng-show="!loggedIn" class="slide-animate" ng-include="'SignInHomeSection.html'"></div>
+<div ng-show="!loggedIn" class="slide-animate" ng-include="'FeaturedAppsHome.html'"></div>
+<div class="slide-animate" ng-include="'Footer.html'"></div>
+
+
+			
+</body>
+</html>

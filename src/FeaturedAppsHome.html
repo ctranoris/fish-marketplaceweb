@@ -1,0 +1,46 @@
+
+<div class="section section-teaser-apps" id="headerMainApps" ng-controller="FeaturedApps">
+	<div  class="container">
+			
+		<div class="row "  > 
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+			<h1>&nbsp;</h1>
+			<h1 class="shadowed-dark">Featured FI-STAR Applications</h1>
+			<h1>&nbsp;</h1>
+			</div>	
+		</div>
+
+			<div class="row">
+
+				<div  ng-repeat="app in apps| limitTo:4" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+					<div class="app-tile">
+							<div id="courseHeaderTitle" style="height: 240px">
+								<img style="margin-top: 2px;height:120px" src="{{app.iconsrc}}">
+								<a href="#/app_view/{{app.id}}">
+										<h3>{{app.name}}</h3></a>
+								<p style="color: #9586F2">by {{app.owner.name}}</p>
+											<p>&nbsp;</p>
+							</div>
+							
+							<p style="color: #636365">{{app.shortDescription}}</p>
+
+						<a class="shadowed-dark"
+							style="font-size: 20px;	bottom: 0; margin: 5px; border-style: solid; border-width: 1px; padding: 10px; background-color: #525789; text-align: center; color: white; right: 15px; position: absolute; left: 15px;"
+							href="#/app_view/{{app.id}}">View</a>
+					</div>
+				</div>
+
+				
+
+
+
+			</div>
+
+			<div class="row"   >  <!--  ------------------------  START CONTENT      ------------------------      -->			
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: right;padding-top:50px;padding-bottom:50px">
+			<h3 class="shadowed-dark"><a style="color: white;" href="#/app_marketplace">More applications...</a></h3>
+			</div>
+		</div><!--  ------------------------  END CONTENT      ------------------------      -->
+		
+	</div>	
+</div>

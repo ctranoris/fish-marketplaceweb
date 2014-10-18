@@ -1,0 +1,27 @@
+<div class="page-header" >
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 appIconMainScreen" >
+				<h1></h1>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 tileimg" style="background: url({{app.iconsrc}}) no-repeat center center;">
+				</div>
+				<h4>Version: {{app.version}}</h4>
+				
+			</div>
+			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+				<h1 id="headerTitle">{{app.name}} </h1>
+				<br/>
+				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/app_deploy"> <i class="fa fa-cloud-upload fa-2x pull-left"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;Deploy&nbsp;&nbsp;&nbsp;&nbsp;</b><br><small>Version: {{app.version}}</small></a>
+				<h3>{{app.shortDescription}}</h3>
+				<p>Author: <strong>{{app.owner.username}}</strong></p>
+				<p>Organization: <strong>{{app.owner.organization}}</strong></p>
+				<p>Date created: <strong>{{app.dateCreated| date:'medium'}}</strong></p>
+				<p>Last update: <strong>{{app.dateUpdated | date:'medium' }}</strong></p>
+				<p>UUID: <strong>{{app.uuid}}</strong></p>
+				<p>{{app.longDescription}}</p>
+
+			</div>
+		</div>
+	</div>
+</div>

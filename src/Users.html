@@ -1,0 +1,40 @@
+<div class="page-header" ng-controller="UserListController">
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1>System Users</h1>
+				<h3>View and manage system users</h3>
+				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/users_add"> <i class="fa fa-user fa-2x pull-left"></i>&nbsp;&nbsp;Create New<br>User</a>
+				<br>
+				<br>
+				<table id="grid1" tr-ng-grid="" class="usersGrid" items="bakerusers"
+					fields="['id', 'username','name', 'organization', 'email', 'role' ]">
+					<thead>
+						<tr>
+							<th field-name="id" display-name="Id" cell-width="5em"
+								display-align="right"></th>
+
+							<th field-name="username" display-name="Username"></th>
+							<th field-name="name" display-name="Name"></th>
+							<th field-name="organization" display-name="Organization"></th>
+							<th field-name="email" display-name="e-mail"></th>
+							<th field-name="role" display-name="role"></th>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td nowrap="nowrap">
+								<a class="btn btn-danger" ng-click="deleteBakerUser(gridItem, gridItem.id, gridItem.username, gridItem.name)"><i class="fa fa-trash-o "></i></a>
+								<a class="btn btn-primary" ng-href="#/edit_user/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>							
+								<a class="btn btn-info" ng-click="clickToOpen(gridDisplayItem.id)""><i class="fa fa-info-circle "></i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</div>
