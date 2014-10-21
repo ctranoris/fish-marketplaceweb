@@ -273,17 +273,58 @@ appControllers.controller('AppListController', ['$scope','$window','$log', 'Appl
 }]);
 
 appControllers.controller('AppAddController', function($scope, $location,
-		ApplicationMetadata, BakerUser, $rootScope, $http,formDataObject, Category,$filter) {
+		ApplicationMetadata, BakerUser, $rootScope, $http,formDataObject, Category,$filter,APIEndPointService) {
 
 	
 	$scope.app = new ApplicationMetadata();
 	$scope.app.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
 	
+	
+    
 	var orderBy = $filter('orderBy');
 	$scope.categories = Category.query(function() {
 		$scope.categories = orderBy($scope.categories, 'name', false);
 		
 	}); 
+	
+	
+	//an array of files selected
+    $scope.files = [];
+    $scope.screenshotimages = [];
+    $scope.image = "";
+    
+   //listen for the file selected event
+    
+
+    $scope.$on("fileSelectedClearPrevious", function (event, args) {
+    	$scope.files = [];
+        $scope.screenshotimages = [];
+    });
+    
+    $scope.$on("fileSelected", function (event, args) {
+        $scope.$apply(function () {            
+            //add the file object to the scope's files collection
+            $scope.files.push(args.file);
+            
+            var reader = new FileReader();
+            
+        	reader.onload = function (e) {
+        		var mdl = {
+        				file: args.file,
+        				img: e.target.result
+        		}
+        		
+        		$scope.screenshotimages.push( mdl ); 
+        	    $scope.image = mdl.img;//trick to load the image
+                $scope.$apply();
+                
+            }
+        	
+            reader.readAsDataURL(args.file);
+            
+            
+        });
+    });
 	
 	
 	$scope.addApp = function() {
@@ -301,7 +342,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 		 
 		return $http({
 			method : 'POST',
-			url : '/baker/services/api/repo/users/'+$scope.app.owner.id+'/apps/',
+			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.app.owner.id+'/apps/',
 			headers : {
 				'Content-Type' : 'multipart/form-data'
 			},
@@ -339,8 +380,28 @@ appControllers.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
-appControllers.controller('AppEditController', ['$scope', '$route', '$routeParams', '$location', 'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter',
-     function( $scope, $route, $routeParams, $location, ApplicationMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter){
+appControllers.directive('fileUpload', function () {
+    return {
+        scope: true,        //create a new scope
+        link: function (scope, el, attrs) {
+        	
+        	
+            
+            el.bind('change', function (event) {
+                var files = event.target.files;
+                scope.$emit("fileSelectedClearPrevious", {});
+                //iterate files since 'multiple' may be specified on the element
+                for (var i = 0;i<files.length;i++) {
+                    //emit event upward
+                    scope.$emit("fileSelected", { file: files[i] });
+                }                                       
+            });
+        }
+    };
+});
+
+appControllers.controller('AppEditController', ['$scope', '$route', '$routeParams', '$location', 'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
+     function( $scope, $route, $routeParams, $location, ApplicationMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter, APIEndPointService){
 
 
 	 //console.log("WILL EDIT ApplicationMetadata with ID "+$routeParams.id);
@@ -356,7 +417,7 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 		 	
 			return $http({
 				method : 'PUT',
-				url : '/baker/services/api/repo/apps/'+$routeParams.id,
+				url : APIEndPointService.APIURL+'services/api/repo/apps/'+$routeParams.id,
 				headers : {
 					'Content-Type' : 'multipart/form-data'
 				},
@@ -582,7 +643,7 @@ appControllers.controller('BunListController', ['$scope','$window','$log', 'BunM
 
 
 appControllers.controller('BunAddController', function($scope, $location,
-		BunMetadata, BakerUser, $rootScope, $http,formDataObject, Category, $filter) {
+		BunMetadata, BakerUser, $rootScope, $http,formDataObject, Category, $filter, APIEndPointService) {
 
 	
 	$scope.bun = new BunMetadata();
@@ -609,7 +670,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 		 
 		return $http({
 			method : 'POST',
-			url : '/baker/services/api/repo/users/'+$scope.bun.owner.id+'/buns/',
+			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.bun.owner.id+'/buns/',
 			headers : {
 				'Content-Type' : 'multipart/form-data'
 			},
@@ -634,8 +695,8 @@ appControllers.controller('BunAddController', function($scope, $location,
 
 
 appControllers.controller('BunEditController', ['$scope', '$route', '$routeParams', '$location', 'BunMetadata', '$anchorScroll',
-                                                '$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter',
-     function( $scope, $route, $routeParams, $location, BunMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter){
+                                                '$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
+     function( $scope, $route, $routeParams, $location, BunMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter,APIEndPointService){
 
 
 	
@@ -648,7 +709,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 		 
 			return $http({
 				method : 'PUT',
-				url : '/baker/services/api/repo/buns/'+$routeParams.id,
+				url : APIEndPointService.APIURL+'services/api/repo/buns/'+$routeParams.id,
 				headers : {
 					'Content-Type' : 'multipart/form-data'
 				},

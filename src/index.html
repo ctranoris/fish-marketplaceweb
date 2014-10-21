@@ -35,25 +35,24 @@
 <link rel="stylesheet" href="css/loading-bar.css" />
 <link rel="stylesheet" href="css/style.css">
 
+
 <script src="js/controllers.js"></script>
 <script src="js/services.js"></script>
 <script src="js/bakerapp.js"></script>
-
-
 
 <script src="js/loading-bar.js"></script>
 
 
 </head>
-<body  ng-app='bakerapp'>
+<body  ng-app='bakerapp' ng-controller='mpMainCtrl'>
 	<div class="slide-animate" ng-include="'menu.html'"></div>
 
 	<div id="main-content" class="content" ng-view autoscroll="true">
 	</div>
 	
 
-<div ng-show="!loggedIn" class="slide-animate" ng-include="'SignInHomeSection.html'"></div>
-<div ng-show="!loggedIn" class="slide-animate" ng-include="'FeaturedAppsHome.html'"></div>
+<div ng-show="!loggedIn && ((location.path() === '/') || (location.path() === '/login'))" class="slide-animate" ng-include="'SignInHomeSection.html'"></div>
+<div ng-show="(location.path() === '/')"  class="slide-animate" ng-include="'FeaturedAppsHome.html'"></div>
 <div class="slide-animate" ng-include="'Footer.html'"></div>
 
 

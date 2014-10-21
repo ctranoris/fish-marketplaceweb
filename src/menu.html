@@ -14,14 +14,14 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav" >
-						<li ng-class="navClass('marketplace')" ><a href="#/app_marketplace">Applications</a></li>
-						<li ng-show="loggedIn" ng-class="navClass('marketplace')" ><a href="#/bun_marketplace">Buns</a></li>
+						<li ng-class="navClass('app_marketplace')" ><a href="#/app_marketplace">Applications</a></li>
+						<li ng-show="loggedIn" ng-class="navClass('bun_marketplace')" ><a href="#/bun_marketplace">Buns</a></li>
 						
 						
 						<li ng-show="loggedIn" class="dropdown"><a class="dropdown-toggle"
 							href="" data-toggle="dropdown">Deployments <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-							<li ng-class="navClass('my_deployments')" ><a href="#/deployments">My Deployed Applications</a></li>
+							<li ng-class="navClass('deployments')" ><a href="#/deployments">My Deployed Applications</a></li>
 								</ul>
 						</li>
 							
@@ -43,6 +43,7 @@
 			
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
+					<li ng-show="!loggedIn"><a href="#/login" >Sign In</a></li>
 					<li ng-show="loggedIn" class="dropdown"><a href="" class="dropdown-toggle"
 						data-toggle="dropdown">{{loggedinbakeruser.username}} ({{loggedinbakeruser.role}}) <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">

@@ -1,6 +1,7 @@
 var app = angular.module('bakerapp', [   'ngCookies', 'ngResource', 'ngRoute', 
-                                         'trNgGrid', 'bakerapp.controllers', 'bakerapp.services', 'ngDialog',
-                                         'angular-loading-bar', 'ngAnimate']);
+                                         'trNgGrid', 'bakerapp.controllers', 
+                                         'bakerapp.services', 'ngDialog',
+                                         'angular-loading-bar', 'ngAnimate' ]);
 
 app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cfpLoadingBarProvider) {
 	
@@ -81,7 +82,11 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 });
 
 
-//app.value('$anchorScroll', angular.noop);
+app.controller('mpMainCtrl', function($scope, BakerUser, $log, $location) {
+	$scope.mpvesrion = '20141020_trunk';
+	$scope.location = $location;
+});
+
 
 app.run(function ( api) {
 	  api.init();
@@ -175,6 +180,8 @@ app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSv
 // github.com/witoldsz/angular-http-auth
 
 app.config(function($httpProvider) {
+	
+	$httpProvider.defaults.withCredentials = true; //good for CORS support
 	$httpProvider.interceptors.push(function($rootScope, $location, $q, $log,$window) {
 		return {
 			'request' : function(request) { // if we're not logged-in to the
@@ -197,7 +204,14 @@ app.config(function($httpProvider) {
 		            }
 		        }
 				
-				if (!$rootScope.loggedIn && $location.path() != '/login' && $location.path() != '/app_marketplace') {
+				if (!$rootScope.loggedIn 
+						&& $location.path() != '/' 
+						&& $location.path() != '/login' 
+							&& $location.path() != '/app_marketplace'
+								&& $location.path() != '/widget_marketplace'
+							&& ($location.path().indexOf("app_view") <=0) 
+							&& ($location.path().indexOf("widget_view") <=0) 
+							) {
 					$log.debug('========== > $rootScope.loggedIn IS FALSE');
 					$location.path('/login');
 				}
@@ -220,7 +234,8 @@ app.config(function($httpProvider) {
 
 
 
-app.factory("authenticationSvc", ["$http","$q","$window","$rootScope", "$log", function ($http, $q, $window,$rootScope, $log) {
+app.factory("authenticationSvc", ["$http","$q","$window","$rootScope", "$log", "APIEndPointService", 
+                                  function ($http, $q, $window,$rootScope, $log, APIEndPointService) {
     var userInfo;
 
 	$log.debug('========== > authenticationSvc');
@@ -228,7 +243,7 @@ app.factory("authenticationSvc", ["$http","$q","$window","$rootScope", "$log", f
     function login(userName, password) {
         var deferred = $q.defer();
         $log.debug('========== > authenticationSvc Login');
-        $http.post("/baker/services/api/repo/sessions/", { username: userName, password: password })
+        $http.post(APIEndPointService.APIURL+"services/api/repo/sessions/", { username: userName, password: password })
             .then(function (result) {
                 userInfo = {
                     accesstoken: "NOTIMPLEMENTED",//result.data.access_token,

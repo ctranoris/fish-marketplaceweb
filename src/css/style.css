@@ -19,7 +19,7 @@ h1 {
 }
 
 p {
-	font-size: 16px;	
+	font-size: 14px;	
 }
 
 .shadowed{
@@ -118,6 +118,7 @@ p {
 	color: #FFFFFF;	
 	background: url('../images/loginlayer_background.PNG') no-repeat center center #aeaeae; 
 	margin-top:10px;
+	min-height: 380px;
 }
 
 .section-teaser-apps {	
@@ -179,7 +180,7 @@ p {
 }
 
 .appTile {
-	height: 350px;
+	height: 380px;
 	text-align: left;
 }
 
@@ -203,7 +204,16 @@ p {
 }
 
 
-
+.screenshottile {
+	border: #cecece; 
+	background-color: white;
+	padding: 2px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 9px #4A4A4B;
+	text-align: center;
+	margin-bottom: 20px;
+	
+}
 
 .example-animate-container {
   background:white;
