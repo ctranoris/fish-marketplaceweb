@@ -1,4 +1,4 @@
-var appControllers = angular.module('bakerapp.controllers',[]) 
+var appControllers = angular.module('bakerapp.controllers',[ 'ngAnimate']) 
 
 
 appControllers.controller('FeaturedApps', ['$scope','$window','$log', 'ApplicationMetadata', 'Category', '$filter',
@@ -332,8 +332,68 @@ appControllers.controller('AppAddController', function($scope, $location,
 			$location.path("/apps");
 		});
 	}
-
+	
 	$scope.submitNewApp = function submit() {
+		
+		var catidsCommaSeparated = '';
+		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
+			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
+		 });
+		 
+		return $http({
+			method : 'POST',
+			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.app.owner.id+'/apps/',
+			headers : {
+				'Content-Type' : undefined
+			},
+
+            //This method will allow us to change how the data is sent up to the server
+            // for which we'll need to encapsulate the model data in 'FormData'
+
+			transformRequest: function (data) {
+                var formData = new FormData();
+                //need to convert our json object to a string version of json otherwise
+                // the browser will do a 'toString()' on the object which will result 
+                // in the value '[Object object]' on the server.
+                //formData.append("app", angular.toJson(data.app));
+                formData.append("appname", $scope.app.name);
+                formData.append("shortDescription", $scope.app.teaser);
+                formData.append("longDescription", $scope.app.longDescription);
+                formData.append("version", $scope.app.version);
+                formData.append("prodIcon", $scope.app.uploadedAppIcon);
+                formData.append("categories", catidsCommaSeparated);
+                //now add all of the assigned files
+                //var fd=new FormData();
+                for (var i = 0; i < data.files.length; i++) {
+                    //add each file to the form data and iteratively name them
+                	//fd.append("screenshots[" + i+"]", data.files[i]);
+                	formData.append("screenshots", data.files[i]);
+                }
+                //formData.append("screenshots", fd);
+                //formData.append("screenshots", data.files);
+                
+                
+                return formData;
+            },
+            //Create an object that contains the model and files which will be transformed
+            // in the above transformRequest method
+
+            //Create an object that contains the model and files which will be transformed
+            // in the above transformRequest method		
+            data: { 
+            		app: $scope.app, 
+            		files: $scope.files }
+			
+            
+		}).success(function(data, status, headers, config) {
+			$location.path("/apps");
+		}).
+        error(function (data, status, headers, config) {
+            alert("failed!");
+        });
+	};
+
+	$scope.submitNewAppOLD = function submit() {
 		
 		var catidsCommaSeparated = '';
 		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
@@ -351,7 +411,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 				shortDescription: $scope.app.teaser,
 				longDescription: $scope.app.longDescription,
 				version: $scope.app.version,
-				uploadedAppIcon: $scope.app.uploadedAppIcon,
+				prodIcon: $scope.app.uploadedAppIcon,
 				categories: catidsCommaSeparated,
 				//file : $scope.file
 			},
@@ -430,7 +490,7 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 					longDescription: $scope.app.longDescription,
 					version: $scope.app.version,
 					categories: catidsCommaSeparated,
-					uploadedAppIcon: $scope.app.uploadedAppIcon,
+					prodIcon: $scope.app.uploadedAppIcon,
 					//file : $scope.file
 				},
 				transformRequest : formDataObject
@@ -482,8 +542,36 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 
 appControllers.controller('AppViewController', ['$scope', '$route', '$routeParams', '$location', 'ApplicationMetadata',
                                                  function( $scope, $route, $routeParams, $location, ApplicationMetadata ){
-    $scope.app=ApplicationMetadata.get({id:$routeParams.id});
-    //console.log("WILL GET ApplicationMetadata with ID "+$routeParams.id);
+    $scope.app=ApplicationMetadata.get({id:$routeParams.id}, function() {
+        //console.log("WILL GET ApplicationMetadata with ID "+$routeParams.id);
+        var shots = $scope.app.screenshots;
+        $scope.screenshotimages = shots.split(",") ;    	
+    	
+        
+        // initial image index
+        $scope._Index = 0;
+
+        // if a current image is the same as requested image
+        $scope.isActive = function (index) {
+            return $scope._Index === index;
+        };
+
+        // show prev image
+        $scope.showPrev = function () {
+            $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.screenshotimages.length - 1;
+        };
+
+        // show next image
+        $scope.showNext = function () {
+            $scope._Index = ($scope._Index < $scope.screenshotimages.length - 1) ? ++$scope._Index : 0;
+        };
+
+        // show a certain image
+        $scope.showPhoto = function (index) {
+            $scope._Index = index;
+        };
+        
+    });
 
 }]);
 
@@ -679,7 +767,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 				shortDescription: $scope.bun.teaser,
 				longDescription: $scope.bun.longDescription,
 				version: $scope.bun.version,
-				uploadedBunIcon: $scope.bun.uploadedBunIcon,
+				prodIcon: $scope.bun.uploadedBunIcon,
 				uploadedBunFile: $scope.bun.uploadedBunFile,
 				categories: catidsCommaSeparated,
 				//file : $scope.file
@@ -722,7 +810,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 					longDescription: $scope.bun.longDescription,
 					version: $scope.bun.version,
 					categories: catidsCommaSeparated,
-					uploadedBunIcon: $scope.bun.uploadedBunIcon,
+					prodIcon: $scope.bun.uploadedBunIcon,
 					uploadedBunFile: $scope.bun.uploadedBunFile,
 					//file : $scope.file
 				},
@@ -827,3 +915,7 @@ appControllers.controller('BunsMarketplaceController', ['$scope','$window','$log
          	
                          	 
         }]);
+
+
+
+
