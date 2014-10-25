@@ -265,9 +265,9 @@ app.factory("authenticationSvc", ["$http","$q","$window","$rootScope", "$log", "
 
         $http({
             method: "GET",
-            url: "/baker/admin/logout",
+            url: APIEndPointService.APIURL+"services/api/repo/sessions/logout",
             headers: {
-                "access_token": "NOT_IMPLEMENTED"//userInfo.accessToken
+                //"access_token": "NOT_IMPLEMENTED"//userInfo.accessToken
             }
         }).then(function (result) {
         	$log.debug('========== > authenticationSvc logout RESET everything' );

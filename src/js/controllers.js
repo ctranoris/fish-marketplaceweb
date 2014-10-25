@@ -356,7 +356,7 @@ appControllers.controller('AppAddController', function($scope, $location,
                 // the browser will do a 'toString()' on the object which will result 
                 // in the value '[Object object]' on the server.
                 //formData.append("app", angular.toJson(data.app));
-                formData.append("appname", $scope.app.name);
+                formData.append("prodname", $scope.app.name);
                 formData.append("shortDescription", $scope.app.teaser);
                 formData.append("longDescription", $scope.app.longDescription);
                 formData.append("version", $scope.app.version);
@@ -377,9 +377,6 @@ appControllers.controller('AppAddController', function($scope, $location,
             },
             //Create an object that contains the model and files which will be transformed
             // in the above transformRequest method
-
-            //Create an object that contains the model and files which will be transformed
-            // in the above transformRequest method		
             data: { 
             		app: $scope.app, 
             		files: $scope.files }
@@ -407,7 +404,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 				'Content-Type' : 'multipart/form-data'
 			},
 			data : {
-				appname: $scope.app.name,
+				prodname: $scope.app.name,
 				shortDescription: $scope.app.teaser,
 				longDescription: $scope.app.longDescription,
 				version: $scope.app.version,
@@ -460,11 +457,17 @@ appControllers.directive('fileUpload', function () {
     };
 });
 
-appControllers.controller('AppEditController', ['$scope', '$route', '$routeParams', '$location', 'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
-     function( $scope, $route, $routeParams, $location, ApplicationMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter, APIEndPointService){
+appControllers.controller('AppEditController', ['$scope', '$route', '$routeParams', '$location', 
+                                                'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
+     function( $scope, $route, $routeParams, $location, ApplicationMetadata, $anchorScroll,
+    		 $http,formDataObject, cfpLoadingBar, Category, $filter, APIEndPointService){
 
 
 	 //console.log("WILL EDIT ApplicationMetadata with ID "+$routeParams.id);
+	
+	
+	
+	
 	
 	 $scope.submitUpdateApp = function submit() {
 		 //cfpLoadingBar.start();
@@ -479,24 +482,44 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 				method : 'PUT',
 				url : APIEndPointService.APIURL+'services/api/repo/apps/'+$routeParams.id,
 				headers : {
-					'Content-Type' : 'multipart/form-data'
+					'Content-Type' : undefined
 				},
-				data : {
-					userid: $scope.app.owner.id,
-					appname: $scope.app.name,
-					appid: $scope.app.id,
-					appuuid: $scope.app.uuid,
-					shortDescription: $scope.app.shortDescription,
-					longDescription: $scope.app.longDescription,
-					version: $scope.app.version,
-					categories: catidsCommaSeparated,
-					prodIcon: $scope.app.uploadedAppIcon,
-					//file : $scope.file
-				},
-				transformRequest : formDataObject
-			}).success(function() {
+				transformRequest: function (data) {
+	                var formData = new FormData();
+	                //need to convert our json object to a string version of json otherwise
+	                // the browser will do a 'toString()' on the object which will result 
+	                // in the value '[Object object]' on the server.
+	                //formData.append("app", angular.toJson(data.app));
+	                formData.append("userid", $scope.app.owner.id);
+	                formData.append("uuid", $scope.app.uuid);
+	                formData.append("prodname", $scope.app.name);
+	                formData.append("shortDescription", $scope.app.teaser);
+	                formData.append("longDescription", $scope.app.longDescription);
+	                formData.append("version", $scope.app.version);
+	                formData.append("prodIcon", $scope.app.uploadedAppIcon);
+	                formData.append("categories", catidsCommaSeparated);
+	                //now add all of the assigned files
+	                //var fd=new FormData();
+	                for (var i = 0; i < data.files.length; i++) {
+	                    //add each file to the form data and iteratively name them
+	                	//fd.append("screenshots[" + i+"]", data.files[i]);
+	                	formData.append("screenshots", data.files[i]);
+	                }
+	                //formData.append("screenshots", fd);
+	                //formData.append("screenshots", data.files);
+	                
+	                
+	                return formData;
+	            },
+	            data: { 
+            		app: $scope.app, 
+            		files: $scope.files }
+			}).success(function(data, status, headers, config) {
 				$location.path("/apps");
-			});
+			}).
+	        error(function (data, status, headers, config) {
+	            alert("failed!");
+	        });
 		};
 	
 
@@ -536,6 +559,50 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 		$scope.categories = orderBy($scope.categories, 'name', false);
 		$scope.loadApp($scope.categories);
 	}); 
+	
+	
+	//screenshots handling /////////////////////////
+	
+	//an array of files selected
+    $scope.files = [];
+    $scope.screenshotimages = [];
+    $scope.image = "";
+    
+   //listen for the file selected event
+    
+
+    $scope.$on("fileSelectedClearPrevious", function (event, args) {
+    	$scope.files = [];
+        $scope.screenshotimages = [];
+    });
+    
+    $scope.$on("fileSelected", function (event, args) {
+        $scope.$apply(function () {            
+            //add the file object to the scope's files collection
+            $scope.files.push(args.file);
+            
+            var reader = new FileReader();
+            
+        	reader.onload = function (e) {
+        		var mdl = {
+        				file: args.file,
+        				img: e.target.result
+        		}
+        		
+        		$scope.screenshotimages.push( mdl ); 
+        	    $scope.image = mdl.img;//trick to load the image
+                $scope.$apply();
+                
+            }
+        	
+            reader.readAsDataURL(args.file);            
+            
+        });
+    });
+
+	//screenshots handling /////////////////////////
+	
+	
     
 }]);
 
@@ -763,7 +830,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 				'Content-Type' : 'multipart/form-data'
 			},
 			data : {
-				bunname: $scope.bun.name,
+				prodname: $scope.bun.name,
 				shortDescription: $scope.bun.teaser,
 				longDescription: $scope.bun.longDescription,
 				version: $scope.bun.version,
@@ -803,7 +870,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 				},
 				data : {
 					userid: $scope.bun.owner.id,
-					bunname: $scope.bun.name,
+					prodname: $scope.bun.name,
 					bunid: $scope.bun.id,
 					bunuuid: $scope.bun.uuid,
 					shortDescription: $scope.bun.shortDescription,
