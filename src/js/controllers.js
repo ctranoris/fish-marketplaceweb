@@ -363,15 +363,9 @@ appControllers.controller('AppAddController', function($scope, $location,
                 formData.append("prodIcon", $scope.app.uploadedAppIcon);
                 formData.append("categories", catidsCommaSeparated);
                 //now add all of the assigned files
-                //var fd=new FormData();
                 for (var i = 0; i < data.files.length; i++) {
-                    //add each file to the form data and iteratively name them
-                	//fd.append("screenshots[" + i+"]", data.files[i]);
                 	formData.append("screenshots", data.files[i]);
                 }
-                //formData.append("screenshots", fd);
-                //formData.append("screenshots", data.files);
-                
                 
                 return formData;
             },

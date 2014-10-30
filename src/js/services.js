@@ -4,8 +4,8 @@ var appServices = angular.module('bakerapp.services',[]);
 appServices.factory('APIEndPointService', function() {
 	  return {	      
 	      
-		  APIURL: "/baker/"
-		  //APIURL: "http://www.forgestore.eu:443/baker/"
+		  //APIURL: "/baker/"
+		  APIURL: "http://www.forgestore.eu:443/baker/"
 	  };
 });
 
