@@ -5,6 +5,7 @@ appServices.factory('APIEndPointService', function() {
 	  return {	      
 	      
 		  //APIURL: "/baker/"
+		  //APIURL: "http://localhost:13000/baker/" //good to test CROSS ORIGIN scenarios. use with http://127.0.0.1/mp
 		  APIURL: "http://83.212.106.218:443/baker/"
 	  };
 });

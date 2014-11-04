@@ -195,28 +195,16 @@ app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSv
 	        , popup = $window.open(APIEndPointService.APIURL+'services/api/repo/oauth2', '', "top=" + top + ",left=" + left + ",width=1024,height=500")
 	        , interval = 1000;
 
-	    // create an ever increasing interval to check a certain global value getting assigned in the popup
-	    var i = $interval(function(){
-	      interval += 500;
-	      try {
 
-	    	  if( !popup.document ){ //when window closes without login
-	      			$interval.cancel(i);
-			        popup.close();
-			        return;
-	      		}
-	    	  
-	      		//$log.debug('========== > inside LoginCtrl controllerinterval interval= '+interval);
-	      		//$log.debug('========== > inside LoginCtrl controllerinterval popup= '+popup.document.body.innerHTML);
-	      		var session= popup.document.body.innerHTML;
-	      		var startI= session.indexOf("{"); 
-	      		var endI= session.lastIndexOf("}"); 
-	      		session = session.substring(startI, endI+1); 
-	      		//$log.debug('========== > inside LoginCtrl session data= '+session);
-	      		
-	      		
-	      		
-		        if (session.indexOf("username")>=0 ){
+		 var receiveMessage =(function (event) //this one is a callback from the popup.Baker REST returns an HTML page that we can communicate via POST message
+		 {
+			   // event.source is popup
+			   // event.data is the jspn object
+			 var popup = event.source;
+			 
+			 $log.debug('========== > insidereceiveMessage popup= '+  event.data);
+			 var session= event.data;
+			 if (session.indexOf("username")>=0 ){
 		        	
 		          $interval.cancel(i);
 		          popup.close();
@@ -238,6 +226,28 @@ app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSv
 	              
 	              
 		        }
+			 
+		 });
+		 
+		 window.addEventListener("message", receiveMessage, false);
+		 
+		 
+	    // create an ever increasing interval to check a certain global value getting assigned in the popup
+	    var i = $interval(function(){
+	      interval += 500;
+	      try {
+
+	    	  // This will successfully queue a message to be sent to the popup, assuming
+	    	  // the window hasn't changed its location.
+	    	  popup.postMessage("hello there!", "*");
+	    		 
+	    	  if( !popup.document ){ //when window closes without login
+	      			$interval.cancel(i);
+			        popup.close();
+			        return;
+	      		}
+	    	  
+	      		
 	      } catch(e){
 	        console.error(e);
 	      }
