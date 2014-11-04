@@ -72,10 +72,14 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 	}).when('/bun_marketplace', {
 		templateUrl : 'BunsMarketplace.html',
 		controller : 'BunsMarketplaceController'
+	}).when('/oauth2fiwarepopup', {
+		templateUrl : 'oauth2fiware.html',
+		controller : 'OAUTH2PopupCtrl'
 	}).otherwise({
 		redirectTo : '/'
 	});
-
+	
+	
 	cfpLoadingBarProvider.includeSpinner = true;
 	cfpLoadingBarProvider.includeBar = true;
 	
@@ -139,14 +143,20 @@ app.controller('SignupCtrl', function($scope) {
 
 
 
-app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSvc", "$log", "$rootScope",
-                             function ($scope, $location, $window, authenticationSvc, $log, $rootScope) {
+app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSvc", "$log", "$rootScope", "$http", "APIEndPointService", "$interval",
+                             function ($scope, $location, $window, authenticationSvc, $log, $rootScope, $http, APIEndPointService, $interval) {
 	$log.debug('========== > inside LoginCtrl controller');
     $scope.userInfo = null;
     $scope.user = {
     		username : '',
     		password : ''
     	};
+    
+    $scope.returnurl = $location.absUrl();
+    
+    
+    
+    	
     $scope.login = function () {
         authenticationSvc.login($scope.user.username, $scope.user.password)
             .then(function (result) {
@@ -169,6 +179,77 @@ app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSv
         $scope.user.userName = "";
         $scope.user.password = "";
     };
+    
+  
+    
+    $scope.showOauth2FIWAREPopup = function showPopup(){
+    		
+	    //$window.$windowScope = $scope;
+	    //$window.open(APIEndPointService.APIURL+'/services/api/repo/oauth2', 'formpopup', "width=500, height=500");
+	    //this.target = 'formpopup';
+
+		  
+	    // center the popup window
+	    var left = screen.width/2 - 200
+	        , top = screen.height/2 - 250
+	        , popup = $window.open(APIEndPointService.APIURL+'services/api/repo/oauth2', '', "top=" + top + ",left=" + left + ",width=1024,height=500")
+	        , interval = 1000;
+
+	    // create an ever increasing interval to check a certain global value getting assigned in the popup
+	    var i = $interval(function(){
+	      interval += 500;
+	      try {
+
+	    	  if( !popup.document ){ //when window closes without login
+	      			$interval.cancel(i);
+			        popup.close();
+			        return;
+	      		}
+	    	  
+	      		//$log.debug('========== > inside LoginCtrl controllerinterval interval= '+interval);
+	      		//$log.debug('========== > inside LoginCtrl controllerinterval popup= '+popup.document.body.innerHTML);
+	      		var session= popup.document.body.innerHTML;
+	      		var startI= session.indexOf("{"); 
+	      		var endI= session.lastIndexOf("}"); 
+	      		session = session.substring(startI, endI+1); 
+	      		//$log.debug('========== > inside LoginCtrl session data= '+session);
+	      		
+	      		
+	      		
+		        if (session.indexOf("username")>=0 ){
+		        	
+		          $interval.cancel(i);
+		          popup.close();
+		          var sessionObj = JSON.parse(session);
+		          var userInfo = {
+		                    accesstoken: "NOTIMPLEMENTED",
+		                    username: sessionObj.username,
+		                    bakerUser: sessionObj.bakerUser,
+		          };
+		          $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
+		          $rootScope.loggedIn = true;
+	              $scope.userInfo = userInfo;
+	              $rootScope.loggedinbakeruser = $scope.userInfo.bakerUser;
+	
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.bakeruser ='+ $rootScope.loggedinbakeruser);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.bakeruser ='+ $rootScope.loggedinbakeruser.username);
+	              
+	              $location.path("/app_marketplace");
+	              
+	              
+		        }
+	      } catch(e){
+	        console.error(e);
+	      }
+	    }, interval);
+	    
+	    
+
+	  }
+    
+    
+    
+    
 }]);
 
 
@@ -210,6 +291,7 @@ app.config(function($httpProvider) {
 							&& $location.path() != '/app_marketplace'
 								&& $location.path() != '/widget_marketplace'
 							&& ($location.path().indexOf("app_view") <=0) 
+							&& ($location.path().indexOf("fiwarepopup") <=0) 
 							&& ($location.path().indexOf("widget_view") <=0) 
 							) {
 					$log.debug('========== > $rootScope.loggedIn IS FALSE');
@@ -310,11 +392,6 @@ app.factory("authenticationSvc", ["$http","$q","$window","$rootScope", "$log", "
         getUserInfo: getUserInfo
     };
 }]);
-
-
-
-
-
 
 
 
