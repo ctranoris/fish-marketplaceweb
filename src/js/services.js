@@ -5,7 +5,7 @@ appServices.factory('APIEndPointService', function() {
 	  return {	      
 	      
 		  //APIURL: "/baker/"
-		  APIURL: "http://www.forgestore.eu:443/baker/"
+		  APIURL: "http://83.212.106.218:443/baker/"
 	  };
 });
 
