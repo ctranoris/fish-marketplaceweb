@@ -978,5 +978,43 @@ appControllers.controller('BunsMarketplaceController', ['$scope','$window','$log
         }]);
 
 
+////////////////////// FiwareInstancesController 
+
+appControllers.controller('FiwareInstancesController', ['$scope','$window','$log',  '$filter', '$rootScope', 'ComputeEndpoint', 'FIWAREServers',
+                                                     	function($scope, $window, $log,  $filter, $rootScope, ComputeEndpoint, FIWAREServers ) {
+
+	
+	$scope.fiwareuser  = $rootScope.loggedinfiwareuser;
+	$scope.selectedComputeEndpoint = new ComputeEndpoint();
+	
+	var orderBy = $filter('orderBy');
+	
+	$scope.computeendpoints = ComputeEndpoint.query({xauthtoken: $rootScope.loggedinfiwareuser.xOAuth2Token},  function() {
+	    //console.log($scope.apps);
+		$scope.selectedComputeEndpoint = $scope.computeendpoints[0];
+	    $scope.computeendpoints = orderBy($scope.computeendpoints, 'region', false);
+	    $scope.changeRegion();
+//	    $scope.servers = FIWAREServers.query({cloudAccessToken: $rootScope.loggedinfiwareuser.cloudToken, endPointPublicURL: $scope.selectedComputeEndpoint.publicURL},  function() {
+//			
+//		});
+	    
+	});
+	
+	$scope.changeRegion = function(){
+//		console.log("$scope.selectedComputeEndpoint.publicURL = " +  $scope.selectedComputeEndpoint.publicURL);
+//		console.log("$rootScope.loggedinfiwareuser.cloudToken = " +  $rootScope.loggedinfiwareuser.cloudToken);
+		 $scope.servers = FIWAREServers.query({cloudAccessToken: $rootScope.loggedinfiwareuser.cloudToken, endPointPublicURL: $scope.selectedComputeEndpoint.publicURL},  function() {
+			 $scope.serversTotalNumber = $scope.servers.length;
+			});
+		
+	};
+	
+	
+	 
+        	
+        	
+        	
+        	
+}]);
 
 

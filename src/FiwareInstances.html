@@ -1,0 +1,25 @@
+<div class="page-header">
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1>FIWARE Instances</h1>
+				<h3>View FIWARE Instances on selected region: 
+				<select ng-model="selectedComputeEndpoint" ng-options="ep.region for ep in computeendpoints" ng-change="changeRegion()">
+							</select> . Total {{serversTotalNumber}}
+							</h3>
+				
+
+					<table id="grid1" tr-ng-grid="" class="fiwareserversGrid" items="servers"></table>
+					
+				<h4>Tenant name: <strong>{{fiwareuser.tenantName}}</strong> , Nickname:
+					<strong>{{fiwareuser.nickName}}</strong>, ID: <strong>{{fiwareuser.tenantId}}</strong></h4>
+					
+				
+				
+					
+			</div>
+		</div>
+	</div>
+</div>

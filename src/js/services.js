@@ -5,8 +5,8 @@ appServices.factory('APIEndPointService', function() {
 	  return {	      
 	      
 		  //APIURL: "/baker/"
-		  //APIURL: "http://localhost:13000/baker/" //good to test CROSS ORIGIN scenarios. use with http://127.0.0.1/mp
-		  APIURL: "http://83.212.106.218:443/baker/"
+		  APIURL: "http://localhost:13000/baker/" //good to test CROSS ORIGIN scenarios. use with http://127.0.0.1/mp
+		  //APIURL: "http://83.212.106.218:443/baker/"
 	  };
 });
 
@@ -128,5 +128,26 @@ appServices.factory('BunMetadata', function($resource, APIEndPointService) {
 	});
 });
 
+//ComputeEndpoint
+appServices.factory('ComputeEndpoint', function($resource, APIEndPointService) {
+	return $resource(APIEndPointService.APIURL+"services/api/repo/fiware/computeendpoints", 
+		{id : "@id"	}, {
+		"update" : {
+			method : "PUT"
+		}
+
+	});
+});
+
+//FIWAREServers
+appServices.factory('FIWAREServers', function($resource, APIEndPointService) {
+	return $resource(APIEndPointService.APIURL+"services/api/repo/fiware/servers", 
+		{id : "@id"	}, {
+		"update" : {
+			method : "PUT"
+		}
+
+	});
+});
 
 

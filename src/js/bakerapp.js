@@ -72,9 +72,9 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 	}).when('/bun_marketplace', {
 		templateUrl : 'BunsMarketplace.html',
 		controller : 'BunsMarketplaceController'
-	}).when('/oauth2fiwarepopup', {
-		templateUrl : 'oauth2fiware.html',
-		controller : 'OAUTH2PopupCtrl'
+	}).when('/fiware_instances', {
+		templateUrl : 'FiwareInstances.html',
+		controller : 'FiwareInstancesController'
 	}).otherwise({
 		redirectTo : '/'
 	});
@@ -143,8 +143,8 @@ app.controller('SignupCtrl', function($scope) {
 
 
 
-app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSvc", "$log", "$rootScope", "$http", "APIEndPointService", "$interval",
-                             function ($scope, $location, $window, authenticationSvc, $log, $rootScope, $http, APIEndPointService, $interval) {
+app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSvc", "$log", "$rootScope", "$http", "APIEndPointService", "$interval", "$cookies", "$cookieStore",
+                             function ($scope, $location, $window, authenticationSvc, $log, $rootScope, $http, APIEndPointService, $interval, $cookies, $cookieStore) {
 	$log.debug('========== > inside LoginCtrl controller');
     $scope.userInfo = null;
     $scope.user = {
@@ -183,13 +183,11 @@ app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSv
   
     
     $scope.showOauth2FIWAREPopup = function showPopup(){
-    		
-	    //$window.$windowScope = $scope;
-	    //$window.open(APIEndPointService.APIURL+'/services/api/repo/oauth2', 'formpopup', "width=500, height=500");
-	    //this.target = 'formpopup';
 
-		  
-	    // center the popup window
+		 var jsession = $cookieStore.get('JSESSIONID');
+		 $log.debug('========== > COOKIES jsession= '+  jsession);
+		 
+	    	    // center the popup window
 	    var left = screen.width/2 - 200
 	        , top = screen.height/2 - 250
 	        , popup = $window.open(APIEndPointService.APIURL+'services/api/repo/oauth2', '', "top=" + top + ",left=" + left + ",width=1024,height=500")
@@ -213,15 +211,26 @@ app.controller("LoginCtrl", ["$scope", "$location", "$window", "authenticationSv
 		                    accesstoken: "NOTIMPLEMENTED",
 		                    username: sessionObj.username,
 		                    bakerUser: sessionObj.bakerUser,
+		                    fiwareuser: sessionObj.fiwareuser,
 		          };
 		          $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
 		          $rootScope.loggedIn = true;
 	              $scope.userInfo = userInfo;
 	              $rootScope.loggedinbakeruser = $scope.userInfo.bakerUser;
-	
-	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.bakeruser ='+ $rootScope.loggedinbakeruser);
-	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.bakeruser ='+ $rootScope.loggedinbakeruser.username);
+	              $rootScope.loggedinfiwareuser = $scope.userInfo.fiwareuser;
+	              $rootScope.xAuthTokenKey = userInfo.xAuthTokenKey;
+	              $rootScope.cloudAccessTokenKey = userInfo.cloudAccessTokenKey;
 	              
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.bakeruser ='+ $rootScope.loggedinbakeruser.username);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.xAuthTokenKey ='+ $rootScope.xAuthTokenKey);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.cloudAccessTokenKey ='+ $rootScope.cloudAccessTokenKey);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.loggedinfiwareuser.nickNamer ='+ $rootScope.loggedinfiwareuser.nickName);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.loggedinfiwareuser.xOAuth2Token ='+ $rootScope.loggedinfiwareuser.xOAuth2Token);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.loggedinfiwareuser.cloudToken ='+ $rootScope.loggedinfiwareuser.cloudToken);
+	      			$log.debug('========== > inside LoginCtrl controllerinterval $rootScope.loggedinfiwareuser.tenantName ='+ $rootScope.loggedinfiwareuser.tenantName);
+	      			  
+
+	      			
 	              $location.path("/app_marketplace");
 	              
 	              
@@ -286,6 +295,10 @@ app.config(function($httpProvider) {
 		            if (userInfo){
 		            	$rootScope.loggedIn = true;		            	
 		            	$rootScope.loggedinbakeruser = userInfo.bakerUser;
+		            	$rootScope.loggedinfiwareuser =userInfo.fiwareuser;
+			            $rootScope.xAuthTokenKey = userInfo.xAuthTokenKey;
+			            $rootScope.cloudAccessTokenKey = userInfo.cloudAccessTokenKey;
+			              
 		            	$log.debug('========== > $rootScope.loggedIn set to TRUE because userInfooo = '+userInfo);
 		            	if (userInfo.bakerUser){
 		            		$log.debug('========== > $rootScope.loggedIn set to TRUE because userInfo.bakerUser.username = '+userInfo.bakerUser.username);
