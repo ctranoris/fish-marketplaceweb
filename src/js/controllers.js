@@ -866,7 +866,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 					userid: $scope.bun.owner.id,
 					prodname: $scope.bun.name,
 					bunid: $scope.bun.id,
-					bunuuid: $scope.bun.uuid,
+					uuid: $scope.bun.uuid,
 					shortDescription: $scope.bun.shortDescription,
 					longDescription: $scope.bun.longDescription,
 					version: $scope.bun.version,
