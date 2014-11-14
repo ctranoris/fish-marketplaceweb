@@ -829,7 +829,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 				longDescription: $scope.bun.longDescription,
 				version: $scope.bun.version,
 				prodIcon: $scope.bun.uploadedBunIcon,
-				uploadedBunFile: $scope.bun.uploadedBunFile,
+				prodFile: $scope.bun.uploadedBunFile,
 				categories: catidsCommaSeparated,
 				//file : $scope.file
 			},
@@ -872,7 +872,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 					version: $scope.bun.version,
 					categories: catidsCommaSeparated,
 					prodIcon: $scope.bun.uploadedBunIcon,
-					uploadedBunFile: $scope.bun.uploadedBunFile,
+					prodFile: $scope.bun.uploadedBunFile,
 					//file : $scope.file
 				},
 				transformRequest : formDataObject
