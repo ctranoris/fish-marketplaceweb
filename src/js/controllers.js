@@ -794,6 +794,18 @@ appControllers.controller('BunListController', ['$scope','$window','$log', 'BunM
 appControllers.controller('BunAddController', function($scope, $location,
 		BunMetadata, BakerUser, $rootScope, $http,formDataObject, Category, $filter, APIEndPointService) {
 
+	var $TABLE = $('#tableExtensions');
+
+	$('.table-add').click(function () {
+	  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+	  $TABLE.find('table').append($clone);
+	});
+	
+	$('.table-remove').click(function () {
+		  $(this).parents('tr').detach();
+	});
+
+
 	
 	$scope.bun = new BunMetadata();
 	$scope.bun.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
@@ -817,6 +829,18 @@ appControllers.controller('BunAddController', function($scope, $location,
 			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
 		 });
 		 
+		 
+		var extsCommaSeparated  = '';
+		var $rows = $TABLE.find('tr:not(:hidden)');
+		$rows.each(function () {
+		    var param = $(this).find("td").eq(0).html();
+		    if (param){ //not undefined
+		    	var val = $(this).find("td").eq(1).html();    
+		    	extsCommaSeparated = extsCommaSeparated+param+'='+val+',';
+		    }
+		});
+		
+		 
 		return $http({
 			method : 'POST',
 			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.bun.owner.id+'/buns/',
@@ -831,6 +855,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 				prodIcon: $scope.bun.uploadedBunIcon,
 				prodFile: $scope.bun.uploadedBunFile,
 				categories: catidsCommaSeparated,
+				extensions: extsCommaSeparated,
 				//file : $scope.file
 			},
 			transformRequest : formDataObject
@@ -847,6 +872,8 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
                                                 '$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
      function( $scope, $route, $routeParams, $location, BunMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter,APIEndPointService){
 
+	
+	
 
 	
 	 $scope.submitUpdateBun = function submit() {
@@ -855,6 +882,16 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 		 angular.forEach ( $scope.bun.categories, function(categ, categkey) {
 			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
 		 });
+		 
+		 var extsCommaSeparated  = '';
+			var $rows = $TABLE.find('tr:not(:hidden)');
+			$rows.each(function () {
+			    var param = $(this).find("td").eq(0).html();
+			    if (param){ //not undefined
+			    	var val = $(this).find("td").eq(1).html();    
+			    	extsCommaSeparated = extsCommaSeparated+param+'='+val+',';
+			    }
+			});
 		 
 			return $http({
 				method : 'PUT',
@@ -871,6 +908,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 					longDescription: $scope.bun.longDescription,
 					version: $scope.bun.version,
 					categories: catidsCommaSeparated,
+					extensions: extsCommaSeparated,
 					prodIcon: $scope.bun.uploadedBunIcon,
 					prodFile: $scope.bun.uploadedBunFile,
 					//file : $scope.file
@@ -917,6 +955,23 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 		$scope.categories = orderBy($scope.categories, 'name', false);
 		$scope.loadBun($scope.categories);
 	}); 
+	
+	var $TABLE = $('#tableExtensions');
+
+	$('.table-add').click(function () {
+	  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+	  $TABLE.find('table').append($clone);
+	});
+	
+	$scope.removeRow = function(ext) {
+		$scope.bun.extensions.splice( $scope.bun.extensions.indexOf(ext) ,1);
+	};
+	
+	
+	$('.table-remove').click(function () {
+		  $(this).parents('tr').detach();
+	});
+
     
 }]);
 
