@@ -21,6 +21,8 @@
 				<p>Last update: <strong>{{bun.dateUpdated | date:'medium' }}</strong></p>
 				<p>UUID: <strong>{{bun.uuid}}</strong></p>
 				<p>{{bun.longDescription}}</p>
+				<p>Available Parameters/Extensions:</p>
+				<p ng-repeat="ext in bun.extensions"><b>{{ext.name}}</b>&nbsp;&nbsp;(default: {{ext.value}}) </p>
 
 			</div>
 		</div>

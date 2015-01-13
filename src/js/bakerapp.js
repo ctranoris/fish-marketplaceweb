@@ -87,7 +87,7 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 
 
 app.controller('mpMainCtrl', function($scope, BakerUser, $log, $location) {
-	$scope.mpvesrion = '20141020_trunk';
+	$scope.mpvesrion = '20150114_trunk';
 	$scope.location = $location;
 });
 

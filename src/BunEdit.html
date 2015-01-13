@@ -33,7 +33,7 @@
 					<div class="form-group">
 						<label for="bun.uploadedBunIcon" class="col-sm-2 control-label">Logo</label>
 						<div class="col-sm-10">
-							<input type="file" class="form-control" name="uploadedBunIcon"  file-model="bun.uploadedBunIcon" placeholder="" />
+							<input type="file" class="form-control" name="uploadedBunIcon"  file-model="uploadedBunIcon" placeholder="" />
 							<p class="help-block">Select logo image</p>
 							
 						</div>
@@ -41,7 +41,7 @@
 					<div class="form-group">
 						<label for="bun.uploadedBunFile" class="col-sm-2 control-label">Package File (.tar.gz)</label>
 						<div class="col-sm-10">
-							<input type="file" class="form-control" name="uploadedBunFile"  file-model="bun.uploadedBunFile" placeholder="" />
+							<input type="file" class="form-control" name="uploadedBunFile"  file-model="uploadedBunFile" placeholder="" />
 							<p class="help-block">Select file (.tar.gz)</p>
 							
 						</div>
@@ -61,7 +61,7 @@
 						<label for="bun.extensions" class="col-sm-2 control-label">Extension variables</label>
 						<div class="col-sm-10">
 							<div id="tableExtensions" class="table-editable">
-							    <span class="table-add glyphicon glyphicon-plus"></span>
+							    <span class="table-add glyphicon glyphicon-plus" ng-click="addExtension(bun)"></span>
 							    <table class="table">
 							      <tr>
 							        <th>Name</th>
@@ -69,8 +69,8 @@
 							        <th></th>
 							      </tr>
 							      <tr class="" ng-repeat="ext in bun.extensions">
-							        <td contenteditable="true">{{ext.name}}</td>
-							        <td contenteditable="true">{{ext.value}}</td>
+							        <td contenteditable="true" ng-model="ext.name"></td>
+							        <td contenteditable="true" ng-model="ext.value"></td>
 							        <td>
 							          <span class="table-remove glyphicon glyphicon-remove" ng-click="removeRow(ext)"></span>
 							        </td>

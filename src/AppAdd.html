@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<label for="app.shortDescription" class="col-sm-2 control-label">Teaser</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control"  ng-model="app.teaser" value="" placeholder="" />
+							<input type="text" class="form-control"  ng-model="app.shortDescription" value="" placeholder="" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -33,7 +33,7 @@
 					<div class="form-group">
 						<label for="app.uploadedAppIcon" class="col-sm-2 control-label">Logo</label>
 						<div class="col-sm-10">
-							<input type="file" class="form-control" name="uploadedAppIcon"  file-model="app.uploadedAppIcon" placeholder="" />
+							<input type="file" class="form-control" name="uploadedAppIcon"  file-model="uploadedAppIcon" placeholder="" />
 							<p class="help-block">Select logo image</p>
 							
 						</div>
@@ -47,6 +47,66 @@
 							</select>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<label for="app.containers" class="col-sm-2 control-label">Containers</label>
+						<div class="col-sm-10">							
+							<p class="help-block">Create containers with Buns</p>
+							
+								<button type="button" class="btn btn-primary" ng-click="addContainer()">Add container</button>								
+								<p></p>
+								<div class="col-sm-12" role="tabpanel">
+								  <!-- Nav tabs -->
+								  <ul class="nav nav-tabs" role="tablist" >
+								    <li ng-repeat="container in app.containers" role="presentation" ng-class="{'active': isActive(container) }">
+								    		<a data-target="{{container.name}}" aria-controls="{{container.name}}" role="tab" data-toggle="tab" ng-click="activateContainer(container)" >{{container.name}}</a></li>
+								   </ul>
+								
+								  <!-- Tab panes -->
+								  <div class="col-sm-12 tab-content"  >
+								    <div ng-repeat="container in app.containers" role="tabpanel"  ng-class="{'tab-pane':true, 'active': isActive(container) }" id="{{container.name}}">
+								    <p>Select and configure artifacts  to deploy into {{container.name}}</p>
+								    
+								    <select ng-model="selectedBun" ng-options="bun.name for bun in buns" ></select>
+								    
+								    <button type="button" class="btn btn-primary" ng-click="addDeploymentArtifact(container, selectedBun)">Add deployment artifact</button>
+								    <button type="button" class="btn btn-primary pull-right" ng-click="removeContainer(container)">Remove Container</button>
+								    
+								    
+								    <div class="col-sm-12 deployArtifact shadowed" ng-repeat="da in container.deployArtifacts"> 
+								    	<div class="col-sm-12"> 
+								    	<p> <b>{{da.name}}</b>  ( {{da.uuid}} )  
+								    	<button type="button" class="btn btn-primary pull-right" ng-click="removeDeploymentArtifact(container, selectedBun)">Remove</button>
+								    	 </p>
+								    	</div>
+									    <div class="col-sm-12 deployArtifactExtensions" ng-repeat="ext in da.extensions">
+									    	<div class="col-sm-2">	{{ext.name}} </div> 
+									    	<div class="col-sm-10">	 
+									    		<input type="text"  ng-model="ext.value"  /> 
+										    	
+										    	<button popover type="button" class="btn btn-info" data-toggle="popover" title="Value of parameter" data-html="true"
+										    	data-content="Type a <b>static value</b>, or use <pre>$containerID.value</pre> as a reference. For example <pre>$container0.IP</pre>"><i class="fa fa-question " ></i></button>
+										    		
+										    		
+									    	</div> 
+									    </div>
+								    
+								    
+								    </div>
+								    
+								    </div>
+								  
+								  </div>
+								
+								</div>
+								
+								
+
+						</div>
+					</div>
+					
+					
+					
 					
 					
 					<div class="form-group">

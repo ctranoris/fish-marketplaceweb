@@ -100,6 +100,59 @@ appServices.factory('ApplicationMetadata', function($resource, APIEndPointServic
 	
 });
 
+appServices.factory('Container', function() {
+	
+	var container = function(id, aName) {
+	       
+	    this.id = id;
+	     
+	    this.name = aName;
+	    this.deployArtifacts = [];
+	 
+	    this.isObject = function(object) {
+	        return object instanceof Object;
+	    };
+	 
+	};
+	
+	return container;
+	
+});
+
+
+appServices.factory('DeployArtifact', function() {
+	
+	var dep = function(id, uuid, name, artifactURL, artifactPackageURL, depextensions) {
+	       
+	    this.id = id;	     
+	    this.name = name; 
+	    this.uuid = uuid; 
+	    this.artifactURL = artifactURL; 
+	    this.artifactPackageURL = artifactPackageURL;
+	    
+	    
+	    var exs=[];
+	    angular.forEach ( depextensions, function(extension, categkey) {
+	    	 var e={};
+			 e.name = extension.name;
+			 e.value = extension.value;
+			 exs.push(e);
+		 });
+
+	    this.extensions = exs;
+	    
+	    this.isObject = function(object) {
+	        return object instanceof Object;
+	    };
+	 
+	};
+	
+	return dep;
+	
+	
+});
+
+
 appServices.factory('formDataObject', function() {
 	return function(data) {
 		var fd = new FormData();

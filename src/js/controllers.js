@@ -273,13 +273,69 @@ appControllers.controller('AppListController', ['$scope','$window','$log', 'Appl
 }]);
 
 appControllers.controller('AppAddController', function($scope, $location,
-		ApplicationMetadata, BakerUser, $rootScope, $http,formDataObject, Category,$filter,APIEndPointService) {
+		ApplicationMetadata, BakerUser, $rootScope, $http,formDataObject, Category,$filter,APIEndPointService, Container, DeployArtifact, BunMetadata) {
 
 	
 	$scope.app = new ApplicationMetadata();
 	$scope.app.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
+
+	$scope.app.containers=[];//clear everything
 	
+	var contnrId=0;
 	
+	var contnr = new Container(contnrId, 'Container'+contnrId);
+	$scope.app.containers.push(contnr);
+	$scope.activeContainer = contnr;
+	
+    $scope.addContainer = function() {
+    	console.log('addContainer');
+    	contnrId = contnrId+1;
+    	var contnr = new Container(null, 'Container'+contnrId);
+    	$scope.app.containers.push(contnr);
+	};
+	
+
+	$scope.removeContainer = function(container){
+		$scope.app.containers.splice( $scope.app.containers.indexOf(container) ,1);
+		$scope.activeContainer = $scope.app.containers[0];
+	}
+	
+	$scope.removeDeploymentArtifact= function(container, selectedBun) {
+
+		container.deployArtifacts.splice( container.deployArtifacts.indexOf(selectedBun) ,1);
+		
+	}
+	
+	$scope.isActive=function(c) {
+        return $scope.activeContainer === c;
+    };
+    
+    
+    $scope.activateContainer =function(c) {
+        return $scope.activeContainer = c;
+    };
+    
+    
+    $scope.buns = BunMetadata.query(function() {
+		    $scope.bunsTotalNumber = $scope.buns.length;
+		    $scope.buns = orderBy($scope.buns, 'name', false);
+		    $scope.selectedBun = $scope.buns[0]; 
+	}); 
+    
+    
+    
+    $scope.addDeploymentArtifact= function(container, selectedBun) {
+
+        var da =new DeployArtifact( null, selectedBun.uuid, 
+        		selectedBun.name , 
+        		'uuid/'+selectedBun.uuid, 
+        		selectedBun.packageLocation, 
+        		selectedBun.extensions);
+        container.deployArtifacts.push(da);
+        return da;
+        
+    };
+    
     
 	var orderBy = $filter('orderBy');
 	$scope.categories = Category.query(function() {
@@ -356,12 +412,13 @@ appControllers.controller('AppAddController', function($scope, $location,
                 // the browser will do a 'toString()' on the object which will result 
                 // in the value '[Object object]' on the server.
                 //formData.append("app", angular.toJson(data.app));
-                formData.append("prodname", $scope.app.name);
-                formData.append("shortDescription", $scope.app.teaser);
-                formData.append("longDescription", $scope.app.longDescription);
-                formData.append("version", $scope.app.version);
-                formData.append("prodIcon", $scope.app.uploadedAppIcon);
-                formData.append("categories", catidsCommaSeparated);
+                formData.append("application",  angular.toJson( data.app, false) );
+                //formData.append("prodname", $scope.app.name);
+                //formData.append("shortDescription", $scope.app.shortDescription);
+                //formData.append("longDescription", $scope.app.longDescription);
+                //formData.append("version", $scope.app.version);
+                formData.append("prodIcon", $scope.uploadedAppIcon);
+                //formData.append("categories", catidsCommaSeparated);
                 //now add all of the assigned files
                 for (var i = 0; i < data.files.length; i++) {
                 	formData.append("screenshots", data.files[i]);
@@ -383,6 +440,8 @@ appControllers.controller('AppAddController', function($scope, $location,
             alert("failed!");
         });
 	};
+	
+	
 
 	$scope.submitNewAppOLD = function submit() {
 		
@@ -399,7 +458,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 			},
 			data : {
 				prodname: $scope.app.name,
-				shortDescription: $scope.app.teaser,
+				shortDescription: $scope.app.shortDescription,
 				longDescription: $scope.app.longDescription,
 				version: $scope.app.version,
 				prodIcon: $scope.app.uploadedAppIcon,
@@ -412,6 +471,58 @@ appControllers.controller('AppAddController', function($scope, $location,
 		});
 	};
 
+});
+
+appControllers.directive("contenteditable", function() {
+	  return {
+	    require: "ngModel",
+	    link: function(scope, element, attrs, ngModel) {
+
+	      function read() {
+	        ngModel.$setViewValue(element.html());
+	      }
+
+	      ngModel.$render = function() {
+	        element.html(ngModel.$viewValue || "");
+	      };
+
+	      element.bind("blur keyup change", function() {
+	        scope.$apply(read);
+	      });
+	    }
+	  };
+	});
+
+appControllers.directive('tooltip', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).hover(function(){
+                // on mouseenter
+                $(element).tooltip('show');
+            }, function(){
+                // on mouseleave
+                $(element).tooltip('hide');
+            });
+        }
+    };
+});
+
+
+
+appControllers.directive('popover', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).hover(function(){
+                // on mouseenter
+                $(element).popover('show');
+            }, function(){
+                // on mouseleave
+                $(element).popover('hide');
+            });
+        }
+    };
 });
 
 
@@ -452,24 +563,68 @@ appControllers.directive('fileUpload', function () {
 });
 
 appControllers.controller('AppEditController', ['$scope', '$route', '$routeParams', '$location', 
-                                                'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
+                                                'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService', 'BunMetadata', 'Container', 'DeployArtifact',
      function( $scope, $route, $routeParams, $location, ApplicationMetadata, $anchorScroll,
-    		 $http,formDataObject, cfpLoadingBar, Category, $filter, APIEndPointService){
-
-
-	 //console.log("WILL EDIT ApplicationMetadata with ID "+$routeParams.id);
+    		 $http,formDataObject, cfpLoadingBar, Category, $filter, APIEndPointService, BunMetadata, Container, DeployArtifact){
 	
+	
+
+	var contnrId=0;
+	
+	$scope.addContainer = function() {
+    	console.log('addContainer');
+    	contnrId = contnrId+1;
+    	var contnr = new Container(null, 'Container'+contnrId);
+    	$scope.app.containers.push(contnr);
+	};
+	
+	$scope.removeContainer = function(container){
+		$scope.app.containers.splice( $scope.app.containers.indexOf(container) ,1);
+		
+	}
+	
+	$scope.removeDeploymentArtifact= function(container, selectedBun) {
+
+		container.deployArtifacts.splice( container.deployArtifacts.indexOf(selectedBun) ,1);
+		
+	}
+	
+	$scope.isActive=function(c) {
+        return $scope.activeContainer === c;
+    };
+    
+    
+    $scope.activateContainer =function(c) {
+        return $scope.activeContainer = c;
+    };
+    
+    
+    $scope.buns = BunMetadata.query(function() {
+		    $scope.bunsTotalNumber = $scope.buns.length;
+		    $scope.buns = orderBy($scope.buns, 'name', false);
+		    $scope.selectedBun = $scope.buns[0]; 
+	}); 
+    
+    
+    
+    $scope.addDeploymentArtifact= function(container, selectedBun) {
+
+        var da =new DeployArtifact( null, selectedBun.uuid, 
+        		selectedBun.name , 
+        		'uuid/'+selectedBun.uuid, 
+        		selectedBun.packageLocation, 
+        		selectedBun.extensions);
+        container.deployArtifacts.push(da);
+        return da;
+        
+    };
+
 	
 	
 	
 	
 	 $scope.submitUpdateApp = function submit() {
 		 //cfpLoadingBar.start();
-		 var catidsCommaSeparated = '';
-		 angular.forEach ( $scope.app.categories, function(categ, categkey) {
-			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
-		 });
-		 	
 		 	
 		 	
 			return $http({
@@ -480,18 +635,19 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 				},
 				transformRequest: function (data) {
 	                var formData = new FormData();
-	                //need to convert our json object to a string version of json otherwise
+	                formData.append("application",  angular.toJson( data.app, false) );
+	                    //need to convert our json object to a string version of json otherwise
 	                // the browser will do a 'toString()' on the object which will result 
 	                // in the value '[Object object]' on the server.
 	                //formData.append("app", angular.toJson(data.app));
-	                formData.append("userid", $scope.app.owner.id);
-	                formData.append("uuid", $scope.app.uuid);
-	                formData.append("prodname", $scope.app.name);
-	                formData.append("shortDescription", $scope.app.teaser);
-	                formData.append("longDescription", $scope.app.longDescription);
-	                formData.append("version", $scope.app.version);
-	                formData.append("prodIcon", $scope.app.uploadedAppIcon);
-	                formData.append("categories", catidsCommaSeparated);
+	                //formData.append("userid", $scope.app.owner.id);
+	                //formData.append("uuid", $scope.app.uuid);
+	                //formData.append("prodname", $scope.app.name);
+	                //formData.append("shortDescription", $scope.app.shortDescription);
+	                //formData.append("longDescription", $scope.app.longDescription);
+	                //formData.append("version", $scope.app.version);
+	                formData.append("prodIcon", $scope.uploadedAppIcon);
+	                //formData.append("categories", catidsCommaSeparated);
 	                //now add all of the assigned files
 	                //var fd=new FormData();
 	                for (var i = 0; i < data.files.length; i++) {
@@ -543,6 +699,8 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
    	 		
    	 		$scope.app=myapp;    
     		
+   	 		contnrId = myapp.containers.length-1;
+   	 		$scope.activeContainer = myapp.containers[0];
     	});     
     		          
    	 	
@@ -793,23 +951,12 @@ appControllers.controller('BunListController', ['$scope','$window','$log', 'BunM
 
 appControllers.controller('BunAddController', function($scope, $location,
 		BunMetadata, BakerUser, $rootScope, $http,formDataObject, Category, $filter, APIEndPointService) {
-
-	var $TABLE = $('#tableExtensions');
-
-	$('.table-add').click(function () {
-	  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-	  $TABLE.find('table').append($clone);
-	});
-	
-	$('.table-remove').click(function () {
-		  $(this).parents('tr').detach();
-	});
-
-
 	
 	$scope.bun = new BunMetadata();
 	$scope.bun.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
-	 
+	$scope.bun.extensions=[];
+	
+	
 	var orderBy = $filter('orderBy');
 	$scope.categories = Category.query(function() {
 		$scope.categories = orderBy($scope.categories, 'name', false);
@@ -821,24 +968,37 @@ appControllers.controller('BunAddController', function($scope, $location,
 			$location.path("/buns");
 		});
 	}
-
+	
+	$scope.addExtension= function(bun){
+		console.log('addExtension');
+		var e={};
+		e.name = 'param';
+		e.value = 'val';
+    	
+    	$scope.bun.extensions.push(e);
+	}
+	
+	$scope.removeRow = function(ext) {
+		$scope.bun.extensions.splice( $scope.bun.extensions.indexOf(ext) ,1);
+	};
+	
+	
 	$scope.submitNewBun = function submit() {
-		
-		var catidsCommaSeparated = '';
-		 angular.forEach ( $scope.bun.categories, function(categ, categkey) {
-			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
-		 });
 		 
-		 
-		var extsCommaSeparated  = '';
-		var $rows = $TABLE.find('tr:not(:hidden)');
-		$rows.each(function () {
-		    var param = $(this).find("td").eq(0).html();
-		    if (param){ //not undefined
-		    	var val = $(this).find("td").eq(1).html();    
-		    	extsCommaSeparated = extsCommaSeparated+param+'='+val+',';
-		    }
-		});
+//		var $rows = $TABLE.find('tr:not(:hidden)');
+//		$rows.each(function () {
+//		    var param = $(this).find("td").eq(0).html();
+//		    if (param){ //not undefined
+//		    	var val = $(this).find("td").eq(1).html();    
+//		    	//extsCommaSeparated = extsCommaSeparated+param+'='+val+',';
+//		    	
+//		    	var e={};
+//				e.name = param;
+//				e.value = val;
+//		    	
+//		    	$scope.bun.extensions.push(e);
+//		    }
+//		});
 		
 		 
 		return $http({
@@ -848,14 +1008,9 @@ appControllers.controller('BunAddController', function($scope, $location,
 				'Content-Type' : 'multipart/form-data'
 			},
 			data : {
-				prodname: $scope.bun.name,
-				shortDescription: $scope.bun.teaser,
-				longDescription: $scope.bun.longDescription,
-				version: $scope.bun.version,
-				prodIcon: $scope.bun.uploadedBunIcon,
-				prodFile: $scope.bun.uploadedBunFile,
-				categories: catidsCommaSeparated,
-				extensions: extsCommaSeparated,
+				bun: angular.toJson( $scope.bun, false ),
+				prodIcon: $scope.uploadedBunIcon,
+				prodFile: $scope.uploadedBunFile,
 				//file : $scope.file
 			},
 			transformRequest : formDataObject
@@ -883,15 +1038,18 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 			 catidsCommaSeparated = catidsCommaSeparated+categ.id+',';
 		 });
 		 
-		 var extsCommaSeparated  = '';
-			var $rows = $TABLE.find('tr:not(:hidden)');
-			$rows.each(function () {
-			    var param = $(this).find("td").eq(0).html();
-			    if (param){ //not undefined
-			    	var val = $(this).find("td").eq(1).html();    
-			    	extsCommaSeparated = extsCommaSeparated+param+'='+val+',';
-			    }
-			});
+//			var $rows = $TABLE.find('tr:not(:hidden)');
+//			$rows.each(function () {
+//			    var param = $(this).find("td").eq(0).html();
+//			    if (param){ //not undefined
+//			    	var val = $(this).find("td").eq(1).html();    
+//			    	
+//			    	var e={};
+//					e.name = param;
+//					e.value = val;			    	
+//			    	$scope.bun.extensions.push(e);
+//			    }
+//			});
 		 
 			return $http({
 				method : 'PUT',
@@ -900,17 +1058,9 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 					'Content-Type' : 'multipart/form-data'
 				},
 				data : {
-					userid: $scope.bun.owner.id,
-					prodname: $scope.bun.name,
-					bunid: $scope.bun.id,
-					uuid: $scope.bun.uuid,
-					shortDescription: $scope.bun.shortDescription,
-					longDescription: $scope.bun.longDescription,
-					version: $scope.bun.version,
-					categories: catidsCommaSeparated,
-					extensions: extsCommaSeparated,
-					prodIcon: $scope.bun.uploadedBunIcon,
-					prodFile: $scope.bun.uploadedBunFile,
+					bun: angular.toJson( $scope.bun, false ),					
+					prodIcon: $scope.uploadedBunIcon,
+					prodFile: $scope.uploadedBunFile,
 					//file : $scope.file
 				},
 				transformRequest : formDataObject
@@ -956,13 +1106,15 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 		$scope.loadBun($scope.categories);
 	}); 
 	
-	var $TABLE = $('#tableExtensions');
-
-	$('.table-add').click(function () {
-	  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-	  $TABLE.find('table').append($clone);
-	});
-	
+	$scope.addExtension= function(bun){
+		console.log('addExtension');
+		var e={};
+		e.name = 'param';
+		e.value = 'val';
+    	
+    	$scope.bun.extensions.push(e);
+	}
+		
 	$scope.removeRow = function(ext) {
 		$scope.bun.extensions.splice( $scope.bun.extensions.indexOf(ext) ,1);
 	};

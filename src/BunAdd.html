@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<label for="bun.shortDescription" class="col-sm-2 control-label">Teaser</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control"  ng-model="bun.teaser" value="" placeholder="" />
+							<input type="text" class="form-control"  ng-model="bun.shortDescription" value="" placeholder="" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -33,7 +33,7 @@
 					<div class="form-group">
 						<label for="bun.uploadedAppIcon" class="col-sm-2 control-label">Logo</label>
 						<div class="col-sm-10">
-							<input type="file" class="form-control" name="uploadedBunIcon"  file-model="bun.uploadedBunIcon" placeholder="" />
+							<input type="file" class="form-control" name="uploadedBunIcon"  file-model="uploadedBunIcon" placeholder="" />
 							<p class="help-block">Select logo image</p>
 							
 						</div>
@@ -42,7 +42,7 @@
 					<div class="form-group">
 						<label for="bun.uploadedBunFile" class="col-sm-2 control-label">Package File (.tar.gz)</label>
 						<div class="col-sm-10">
-							<input type="file" class="form-control" name="uploadedBunFile"  file-model="bun.uploadedBunFile" placeholder="" />
+							<input type="file" class="form-control" name="uploadedBunFile"  file-model="uploadedBunFile" placeholder="" />
 							<p class="help-block">Select file (.tar.gz)</p>
 							
 						</div>
@@ -63,19 +63,27 @@
 						<label for="bun.extensions" class="col-sm-2 control-label">Extension variables</label>
 						<div class="col-sm-10">
 							<div id="tableExtensions" class="table-editable">
-							    <span class="table-add glyphicon glyphicon-plus"></span>
-							    <table class="table">
+							    <span class="table-add glyphicon glyphicon-plus" ng-click="addExtension(bun)"></span>
+							    <table class="table" >
 							      <tr>
 							        <th>Name</th>
 							        <th>Value</th>
 							        <th></th>
+							      </tr>
+							      <tr class="" ng-repeat="ext in bun.extensions">
+							        <td contenteditable="true" ng-model="ext.name"></td>
+							        <td contenteditable="true" ng-model="ext.value"></td>
+							        <td>
+							          <span class="table-remove glyphicon glyphicon-remove" ng-click="removeRow(ext)"></span>
+							        </td>
+							       
 							      </tr>
 							      <!-- This is our clonable table line -->
 							      <tr class="hide">
 							        <td contenteditable="true">Param</td>
 							        <td contenteditable="true">Value</td>
 							        <td>
-							          <span class="table-remove glyphicon glyphicon-remove"></span>
+							          <span class="table-remove glyphicon glyphicon-remove" ng-click="removeRow(ext)"></span>
 							        </td>
 							        
 							      </tr>
