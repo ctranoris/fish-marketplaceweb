@@ -127,7 +127,7 @@ appServices.factory('DeployContainer', function() {
 	    this.id = id;
 
 	    this.name = aName;
-	    this.targetResource = {};
+	    //this.targetResource = {};
 	    this.deployArtifacts = [];
 	 
 	    this.isObject = function(object) {

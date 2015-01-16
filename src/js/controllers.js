@@ -205,9 +205,10 @@ appControllers.controller('SubscribedResourceViewController', ['$scope', '$route
 
 }]);
 
-appControllers.controller('SubscribedResourceAddController',function($scope, $location, SubscribedResource){
+appControllers.controller('SubscribedResourceAddController',function($scope, $rootScope,$location, SubscribedResource){
 
     $scope.subscribedresource=new SubscribedResource();
+	$scope.subscribedresource.owner = $rootScope.loggedinbakeruser;
 
     $scope.addSubscribedResource=function(){
         $scope.subscribedresource.$save(function(){
@@ -315,7 +316,8 @@ appControllers.controller('AppAddController', function($scope, $location,
         return $scope.activeContainer = c;
     };
     
-    
+
+	var orderBy = $filter('orderBy');
     $scope.buns = BunMetadata.query(function() {
 		    $scope.bunsTotalNumber = $scope.buns.length;
 		    $scope.buns = orderBy($scope.buns, 'name', false);
@@ -337,7 +339,6 @@ appControllers.controller('AppAddController', function($scope, $location,
     };
     
     
-	var orderBy = $filter('orderBy');
 	$scope.categories = Category.query(function() {
 		$scope.categories = orderBy($scope.categories, 'name', false);
 		
@@ -1256,10 +1257,20 @@ appControllers.controller('MyDeploymentsListController', ['$scope','$window','$l
 }]);
 
 
-appControllers.controller('CreateAppDeploymentController', ['$scope', '$route', '$rootScope', '$routeParams','$window','$log', 'DeploymentDescriptor', 'ApplicationMetadata', 'DeployContainer','DeployArtifact','popupService','ngDialog',
-                                             	function($scope, $route, $rootScope, $routeParams, $window, $log, DeploymentDescriptor, ApplicationMetadata, DeployContainer, DeployArtifact, popupService, ngDialog ) {
+appControllers.controller('CreateAppDeploymentController', ['$scope', '$route', '$rootScope', '$routeParams','$window','$log', 
+                                                            'DeploymentDescriptor', 'ApplicationMetadata', 'DeployContainer','DeployArtifact',
+                                                            'SubscribedResource', '$filter', '$http', 'APIEndPointService', '$location',
+                                             	function($scope, $route, $rootScope, $routeParams, $window, $log, DeploymentDescriptor, 
+                                             			ApplicationMetadata, DeployContainer, DeployArtifact,  SubscribedResource , 
+                                             			$filter, $http, APIEndPointService, $location) {
                  	
-                 	
+
+	var orderBy = $filter('orderBy');   	
+	$scope.subscribedresources = SubscribedResource.query(function() {
+			$scope.subscribedresources = orderBy($scope.subscribedresources, 'url', false);
+		  }); 
+		 
+	
 	$scope.newdeployment = new DeploymentDescriptor(); 	
 	$scope.newdeployment.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
 	$scope.newdeployment.deployContainers=[];//clear everything 	
@@ -1298,6 +1309,28 @@ appControllers.controller('CreateAppDeploymentController', ['$scope', '$route', 
     $scope.activateContainer =function(c) {
         return $scope.activeContainer = c;
     };
+    
+    
+    
+    $scope.submitNewAppDeployment = function submit() {
+		 
+		return $http({
+			method : 'POST',
+			url : APIEndPointService.APIURL+'services/api/repo/deployments/',
+			headers : {
+				'Content-Type' : 'application/json'
+			},
+
+            data: $scope.newdeployment
+			
+            
+		}).success(function(data, status, headers, config) {
+			$location.path("/mydeployments");
+		}).
+        error(function (data, status, headers, config) {
+            alert("failed!");
+        });
+	};
  	          	
                  	 
 }]);

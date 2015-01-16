@@ -32,7 +32,7 @@
 								    <div ng-repeat="deploycontainer in newdeployment.deployContainers" role="tabpanel"  ng-class="{'tab-pane':true, 'active': isActive(deploycontainer) }" id="{{deploycontainer.name}}">
 								    <p>Configure artifacts in {{deploycontainer.name}}</p>								    								   
 								    
-								    Target resource: <select ng-model="targetResource" ng-options="registeredresource.name for registeredresource in registeredresources" ></select>
+								    Target resource: <select ng-model="deploycontainer.targetResource" ng-options="s.url for s in subscribedresources" ></select>
 								    
 								    
 								    <div class="col-sm-12 deployArtifact shadowed" ng-repeat="da in deploycontainer.deployArtifacts"> 
