@@ -144,29 +144,29 @@ appControllers.directive('equals', function() {
 
 
 
-appControllers.controller('SubscribedMachineListController', ['$scope','$window','$log', 'SubscribedMachine', 'popupService','ngDialog',
-                                             	function($scope, $window, $log, SubscribedMachine, popupService, ngDialog ) {
+appControllers.controller('SubscribedResourceListController', ['$scope','$window','$log', 'SubscribedResource', 'popupService','ngDialog',
+                                             	function($scope, $window, $log, SubscribedResource, popupService, ngDialog ) {
                  	
                  	
 
- 	$scope.subscribedmachines = SubscribedMachine.query(function() {
- 		    //console.log($scope.subscribedmachines);
- 		  }); //query() returns all the subscribedmachines
+ 	$scope.subscribedresources = SubscribedResource.query(function() {
+ 		    //console.log($scope.subscribedresources);
+ 		  }); //query() returns all the subscribedresources
  		 
  	
  	
- 	 $scope.deleteSubscribedMachine = function(gridItem, useridx, url){
+ 	 $scope.deleteSubscribedResource = function(gridItem, useridx, url){
 
- 		 $log.debug("Selected to DELETE SubscribedMachine with id = "+ useridx);
+ 		 $log.debug("Selected to DELETE SubscribedResource with id = "+ useridx);
  		 	
 
- 		 	var subscribedmachine=SubscribedMachine.get({id:useridx}, function() {
- 			    $log.debug("WILL DELETE SubscribedMachine with ID "+ subscribedmachine.id);
+ 		 	var subscribedresource=SubscribedResource.get({id:useridx}, function() {
+ 			    $log.debug("WILL DELETE SubscribedResource with ID "+ subscribedresource.id);
  			    
- 		        if(popupService.showPopup('Really delete SubscribedMachine '+subscribedmachine.id+'" ?')){
+ 		        if(popupService.showPopup('Really delete SubscribedResource '+subscribedresource.id+'" ?')){
  				 	
- 		        	subscribedmachine.$delete(function(){
- 		    			$scope.subscribedmachines.splice($scope.subscribedmachines.indexOf(gridItem),1)
+ 		        	subscribedresource.$delete(function(){
+ 		    			$scope.subscribedresources.splice($scope.subscribedresources.indexOf(gridItem),1)
  		            });
  		        
  		        }
@@ -175,12 +175,12 @@ appControllers.controller('SubscribedMachineListController', ['$scope','$window'
  	 
  	 $scope.clickToOpen = function (gridItem, useridx, url) {
         ngDialog.open({ 
-        	template: 'SubscribedMachineView.html',
-        	controller : ['$scope', 'SubscribedMachine', function( $scope,  SubscribedMachine){
-        	    $scope.subscribedmachine=SubscribedMachine.get({id:useridx});
-        	    var i =SubscribedMachine.get({id:useridx});
-        	    //console.log("WILL GET SubscribedMachine with ID "+useridx);
-        	    //console.log("WILL GET SubscribedMachine with i "+i.id);	        	    
+        	template: 'SubscribedResourceView.html',
+        	controller : ['$scope', 'SubscribedResource', function( $scope,  SubscribedResource){
+        	    $scope.subscribedresource=SubscribedResource.get({id:useridx});
+        	    var i =SubscribedResource.get({id:useridx});
+        	    //console.log("WILL GET SubscribedResource with ID "+useridx);
+        	    //console.log("WILL GET SubscribedResource with i "+i.id);	        	    
     			}],
     		className: 'ngdialog-theme-default'
     		
@@ -191,49 +191,49 @@ appControllers.controller('SubscribedMachineListController', ['$scope','$window'
                  	 
 }]);
 
-appControllers.controller('SubscribedMachineViewController', ['$scope', '$route', '$routeParams', '$location', 'SubscribedMachine', '$anchorScroll', 
-                                                 function( $scope, $route, $routeParams, $location, SubscribedMachine, $anchorScroll){
-    $scope.subscribedmachine=SubscribedMachine.get({id:$routeParams.id});
-    var i =SubscribedMachine.get({id:$routeParams.id});
-    //console.log("WILL GET SubscribedMachine with ID "+$routeParams.id);
-    //console.log("WILL GET SubscribedMachine with i "+i.id);
+appControllers.controller('SubscribedResourceViewController', ['$scope', '$route', '$routeParams', '$location', 'SubscribedResource', '$anchorScroll', 
+                                                 function( $scope, $route, $routeParams, $location, SubscribedResource, $anchorScroll){
+    $scope.subscribedresource=SubscribedResource.get({id:$routeParams.id});
+    var i =SubscribedResource.get({id:$routeParams.id});
+    //console.log("WILL GET SubscribedResource with ID "+$routeParams.id);
+    //console.log("WILL GET SubscribedResource with i "+i.id);
     
-	$scope.name = "SubscribedMachineViewController";
+	$scope.name = "SubscribedResourceViewController";
 	$scope.params = $routeParams;
 	
 	  
 
 }]);
 
-appControllers.controller('SubscribedMachineAddController',function($scope, $location, SubscribedMachine){
+appControllers.controller('SubscribedResourceAddController',function($scope, $location, SubscribedResource){
 
-    $scope.subscribedmachine=new SubscribedMachine();
+    $scope.subscribedresource=new SubscribedResource();
 
-    $scope.addSubscribedMachine=function(){
-        $scope.subscribedmachine.$save(function(){
-			$location.path("/subscribed_machines");
+    $scope.addSubscribedResource=function(){
+        $scope.subscribedresource.$save(function(){
+			$location.path("/subscribed_resources");
         });
     }
 
 });
 
-appControllers.controller('SubscribedMachineEditController', ['$scope', '$route', '$routeParams', '$location', 'SubscribedMachine', '$anchorScroll',
-        function( $scope, $route, $routeParams, $location, SubscribedMachine, $anchorScroll){
+appControllers.controller('SubscribedResourceEditController', ['$scope', '$route', '$routeParams', '$location', 'SubscribedResource', '$anchorScroll',
+        function( $scope, $route, $routeParams, $location, SubscribedResource, $anchorScroll){
 
 
-    //console.log("WILL EDIT SubscribedMachine with ID "+$routeParams.id);
+    //console.log("WILL EDIT SubscribedResource with ID "+$routeParams.id);
 	
-    $scope.updateSubscribedMachine=function(){
-        $scope.subscribedmachine.$update(function(){
-			$location.path("/subscribed_machines");
+    $scope.updateSubscribedResource=function(){
+        $scope.subscribedresource.$update(function(){
+			$location.path("/subscribed_resources");
         });
     };
 
-    $scope.loadSubscribedMachine=function(){
-        $scope.subscribedmachine=SubscribedMachine.get({id:$routeParams.id});
+    $scope.loadSubscribedResource=function(){
+        $scope.subscribedresource=SubscribedResource.get({id:$routeParams.id});
     };
 
-    $scope.loadSubscribedMachine();
+    $scope.loadSubscribedResource();
 }]);
 
 
@@ -247,7 +247,7 @@ appControllers.controller('AppListController', ['$scope','$window','$log', 'Appl
 
  	$scope.apps = ApplicationMetadata.query(function() {
  		    //console.log($scope.apps);
- 		  }); //query() returns all the subscribedmachines
+ 		  }); //query() returns all the subscribedresources
  		 
  	
  	
@@ -483,7 +483,9 @@ appControllers.directive("contenteditable", function() {
 	      }
 
 	      ngModel.$render = function() {
-	        element.html(ngModel.$viewValue || "");
+	    	  var t = ngModel.$viewValue;
+	    	  t =  encodeURI(t);
+	        element.html( t || "");
 	      };
 
 	      element.bind("blur keyup change", function() {
@@ -629,7 +631,7 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 		 	
 			return $http({
 				method : 'PUT',
-				url : APIEndPointService.APIURL+'services/api/repo/apps/'+$routeParams.id,
+				url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.app.owner.id+'/apps/'+$routeParams.id,
 				headers : {
 					'Content-Type' : undefined
 				},
@@ -923,7 +925,7 @@ appControllers.controller('BunListController', ['$scope','$window','$log', 'BunM
                  	
  	$scope.buns= BunMetadata.query(function() {
  		    //console.log($scope.apps);
- 		  }); //query() returns all the subscribedmachines
+ 		  }); //query() returns all the subscribedresources
  		 
  	
  	
@@ -1053,7 +1055,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 		 
 			return $http({
 				method : 'PUT',
-				url : APIEndPointService.APIURL+'services/api/repo/buns/'+$routeParams.id,
+				url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.bun.owner.id+'/buns/'+$routeParams.id,
 				headers : {
 					'Content-Type' : 'multipart/form-data'
 				},
@@ -1216,12 +1218,86 @@ appControllers.controller('FiwareInstancesController', ['$scope','$window','$log
 		
 	};
 	
-	
-	 
-        	
-        	
-        	
         	
 }]);
 
 
+//////////Deployments controller
+
+appControllers.controller('MyDeploymentsListController', ['$scope','$window','$log', 'DeploymentDescriptor', 'popupService','ngDialog',
+                                             	function($scope, $window, $log, DeploymentDescriptor, popupService, ngDialog ) {
+                 	
+                 	
+ 	$scope.mydeployments= DeploymentDescriptor.query(function() {
+ 		    
+ 		  }); 
+ 		 
+ 	
+ 	
+ 	 $scope.deleteDeployment = function(gridItem, bunidx){
+
+ 		$log.debug("Selected to DELETE Deployment with id = "+ bunidx);
+ 		 	
+
+ 		 	var dep=DeploymentDescriptor.get({id:bunidx}, function() {
+ 			    $log.debug("WILL DELETE DeploymentDescriptor ID "+ dep.id);
+ 			    
+ 		        if(popupService.showPopup('Really delete Deployment "'+dep.name+'" ?')){
+ 				 	
+ 		        	dep.$delete(function(){
+ 		    			$scope.mydeployments.splice($scope.mydeployments.indexOf(gridItem),1)
+ 		            });
+ 		        
+ 		        }
+ 		 	});
+ 	    }
+ 	          	
+                 	 
+}]);
+
+
+appControllers.controller('CreateAppDeploymentController', ['$scope', '$route', '$rootScope', '$routeParams','$window','$log', 'DeploymentDescriptor', 'ApplicationMetadata', 'DeployContainer','DeployArtifact','popupService','ngDialog',
+                                             	function($scope, $route, $rootScope, $routeParams, $window, $log, DeploymentDescriptor, ApplicationMetadata, DeployContainer, DeployArtifact, popupService, ngDialog ) {
+                 	
+                 	
+	$scope.newdeployment = new DeploymentDescriptor(); 	
+	$scope.newdeployment.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
+	$scope.newdeployment.deployContainers=[];//clear everything 	
+	
+ 	var myapp = ApplicationMetadata.get({id:$routeParams.id}, function() {	 		
+	 		$scope.newdeployment.baseApplication=myapp;    	
+	 		$scope.newdeployment.name=myapp.name+' Deployment';
+	 		
+	 		angular.forEach(myapp.containers, function(container, containerkey) {
+	 			var dc = new DeployContainer(null, container.name);
+	 			
+	 			angular.forEach(container.deployArtifacts , function(deployArtifact, artifactkey) {
+	 				var da =new DeployArtifact( null, deployArtifact.uuid, 
+	 						deployArtifact.name , 
+	 						deployArtifact.artifactURL, 
+	 						deployArtifact.artifactPackageURL, 
+	 						deployArtifact.extensions);
+	 				
+		 			dc.deployArtifacts.push(da);
+	 				
+	 			});
+	 			
+	 			$scope.newdeployment.deployContainers.push(dc);
+	 			
+	   	 	});	 
+	 		
+	 		$scope.activeContainer = $scope.newdeployment.deployContainers[0];
+	 		
+	}); 
+ 	
+ 	$scope.isActive=function(c) {
+        return $scope.activeContainer === c;
+    };
+    
+    
+    $scope.activateContainer =function(c) {
+        return $scope.activeContainer = c;
+    };
+ 	          	
+                 	 
+}]);

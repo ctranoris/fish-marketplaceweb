@@ -69,22 +69,14 @@
 							        <th></th>
 							      </tr>
 							      <tr class="" ng-repeat="ext in bun.extensions">
-							        <td contenteditable="true" ng-model="ext.name"></td>
-							        <td contenteditable="true" ng-model="ext.value"></td>
+							        <td><pre contenteditable="true" ng-model="ext.name"></pre></td>
+							        <td><pre contenteditable="true" ng-model="ext.value"></pre></td>
 							        <td>
 							          <span class="table-remove glyphicon glyphicon-remove" ng-click="removeRow(ext)"></span>
 							        </td>
 							       
 							      </tr>
-							      <!-- This is our clonable table line -->
-							      <tr class="hide">
-							        <td contenteditable="true">Param</td>
-							        <td contenteditable="true">Value</td>
-							        <td>
-							          <span class="table-remove glyphicon glyphicon-remove"></span>
-							        </td>
-							        
-							      </tr>
+							      
 							    </table>
 							  </div>
 						</div>

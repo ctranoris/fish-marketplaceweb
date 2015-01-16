@@ -1,0 +1,40 @@
+<div class="page-header" >
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1>My Deployed Applications</h1>
+				<h3>View and manage deployed applications</h3>
+				<table id="grid1" tr-ng-grid="" class="usersGrid" items="mydeployments" page-items="10"
+					fields="['id', 'name', 'status', 'owner.username']">
+					
+					<thead>
+						<tr>
+							<th field-name="id" display-name="Id" cell-width="5em"display-align="right"></th>
+							<th field-name="name" display-name="Name"></th>
+							<th field-name="status" display-name="Status"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td nowrap="nowrap" >
+							<div ng-repeat="appcat in gridItem.categories">{{appcat.name}} </div>
+							</td>
+							<td nowrap="nowrap" >
+								<img width="120px" src="{{gridItem.iconsrc}}"> 
+								<p><strong>UUID: {{gridItem.uuid}}</strong><br></p>
+								<p><strong>Version: {{gridItem.version}}</strong><br></p>
+								<p>Date created: <strong>{{gridItem.dateCreated| date:'medium'}}</strong></p>
+								<p>Last update: <strong>{{gridItem.dateUpdated | date:'medium' }}</strong></p>
+								<a class="btn btn-danger" ng-click="deleteApp(gridItem, gridItem.id)"><i class="fa fa-trash-o "></i></a>
+								<a class="btn btn-primary" ng-href="#/app_edit/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>									
+								<a class="btn btn-info" ng-href="#/app_view/{{gridDisplayItem.id}}"><i class="fa fa-info-circle "></i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</div>

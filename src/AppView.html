@@ -13,7 +13,7 @@
 				<h1 id="headerTitle">{{app.name}} </h1>
 				<p><span ng-repeat="appcat in app.categories"><span class="label label-info">{{appcat.name}}</span>&nbsp;&nbsp;</span></p>
 				<br/>
-				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/app_deploy"> <i class="fa fa-cloud-upload fa-2x pull-left"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;Deploy&nbsp;&nbsp;&nbsp;&nbsp;</b><br><small>Version: {{app.version}}</small></a>
+				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/create_app_deployment/{{app.id}}"> <i class="fa fa-cloud-upload fa-2x pull-left"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;Deploy&nbsp;&nbsp;&nbsp;&nbsp;</b><br><small>Version: {{app.version}}</small></a>
 				<h3>{{app.shortDescription}}</h3>
 				<p>Author: <strong>{{app.owner.username}}</strong></p>
 				<p>Organization: <strong>{{app.owner.organization}}</strong></p>
@@ -21,6 +21,23 @@
 				<p>Last update: <strong>{{app.dateUpdated | date:'medium' }}</strong></p>
 				<p>UUID: <strong>{{app.uuid}}</strong></p>
 				<p>{{app.longDescription}}</p>
+				
+				
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-repeat="container in app.containers" style="border-style: dotted; border-color: rgb(45, 45, 48); border-width: 1px;">
+					<b>{{container.name}}</b>
+					<div class="col-sm-12 deployArtifact shadowed" ng-repeat="da in container.deployArtifacts"> 
+				    	<div class="col-sm-12"> 
+				    	<p> <b>{{da.name}}</b>  ( {{da.uuid}} )  
+				    	 </p>
+				    	</div>
+					    <div class="col-sm-12 deployArtifactExtensions" ng-repeat="ext in da.extensions">
+					    	<div class="col-sm-6">	{{ext.name}} </div> 
+					    	<div class="col-sm-6">	{{ext.value}} </div> 
+					    </div>
+				    
+				    
+				    </div>
+				</div>
 
 				<!-- slider container -->
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -42,6 +59,8 @@
 					        </ul>
 					
 					    </div>
+					    
+					    
 				</div>
 				<!-- 
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

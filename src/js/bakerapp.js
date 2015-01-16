@@ -24,15 +24,15 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 	}).when('/edit_user/:id', {
 		templateUrl : 'UserEdit.html',
 		controller : 'UserEditController'
-	}).when('/subscribed_machines', {
-		templateUrl : 'SubscribedMachines.html',
-		controller : 'SubscribedMachineListController'
-	}).when('/add_subscribed_machine', {
-		templateUrl : 'SubscribedMachineAdd.html',
-		controller : 'SubscribedMachineAddController'
-	}).when('/edit_subscribed_machine/:id', {
-		templateUrl : 'SubscribedMachineEdit.html',
-		controller : 'SubscribedMachineEditController'
+	}).when('/subscribed_resources', {
+		templateUrl : 'SubscribedResources.html',
+		controller : 'SubscribedResourceListController'
+	}).when('/add_subscribed_resource', {
+		templateUrl : 'SubscribedResourceAdd.html',
+		controller : 'SubscribedResourceAddController'
+	}).when('/edit_subscribed_resource/:id', {
+		templateUrl : 'SubscribedResourceEdit.html',
+		controller : 'SubscribedResourceEditController'
 	}).when('/apps', {
 		templateUrl : 'Apps.html',
 		controller : 'AppListController'
@@ -75,6 +75,12 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 	}).when('/fiware_instances', {
 		templateUrl : 'FiwareInstances.html',
 		controller : 'FiwareInstancesController'
+	}).when('/mydeployments', {
+		templateUrl : 'MyDeployments.html',
+		controller : 'MyDeploymentsListController'
+	}).when('/create_app_deployment/:id', {
+		templateUrl : 'CreateAppDeployment.html',
+		controller : 'CreateAppDeploymentController'
 	}).otherwise({
 		redirectTo : '/'
 	});

@@ -3,12 +3,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<h1>All registered Subscribed Machines</h1>
-				<h3>View and manage system Subscribed Machines</h3>
-				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/add_subscribed_machine"> <i class="pull-left"></i>&nbsp;&nbsp;Create New<br>Subscribed Machine</a>
+				<h1>All registered Subscribed Resources</h1>
+				<h3>View and manage system Subscribed Resources</h3>
+				<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="#/add_subscribed_resource"> <i class="pull-left"></i>&nbsp;&nbsp;Create New<br>Subscribed resource</a>
 				<br>
 				<br>
-				<table id="grid1" tr-ng-grid="" class="usersGrid" items="subscribedmachines"
+				<table id="grid1" tr-ng-grid="" class="usersGrid" items="subscribedresources"
 					fields="['id', 'url' ]">
 					<thead>
 						<tr>
@@ -21,8 +21,8 @@
 					<tbody>
 						<tr>
 							<td nowrap="nowrap">
-								<a class="btn btn-danger" ng-click="deleteSubscribedMachine(gridItem, gridItem.id, gridItem.url)"><i class="fa fa-trash-o "></i></a>
-								<a class="btn btn-primary" ng-href="#/edit_subscribed_machine/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>									
+								<a class="btn btn-danger" ng-click="deleteSubscribedResource(gridItem, gridItem.id, gridItem.url)"><i class="fa fa-trash-o "></i></a>
+								<a class="btn btn-primary" ng-href="#/edit_subscribed_resource/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>									
 								<a class="btn btn-info" ng-click="clickToOpen(gridItem, gridItem.id, gridItem.url)""><i class="fa fa-info-circle "></i></a>
 							</td>
 						</tr>

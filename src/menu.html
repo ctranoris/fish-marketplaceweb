@@ -15,14 +15,16 @@
 			<div class="collapse navbar-collapse"id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav" >
 						<li ng-class="navClass('app_marketplace')" ><a href="#/app_marketplace">Applications</a></li>
-						<li ng-show="loggedIn" ng-class="navClass('bun_marketplace')" ><a href="#/bun_marketplace">Buns</a></li>
+						
+						<li ng-show="loggedIn && ( (loggedinbakeruser.role === 'ROLE_DEVELOPER')|| (loggedinbakeruser.role === 'ROLE_BOSS') )" ng-class="navClass('bun_marketplace')" ><a href="#/bun_marketplace">Buns</a></li>
 						
 						
 						<li ng-show="loggedIn" class="dropdown"><a class="dropdown-toggle"
 							href="" data-toggle="dropdown">Deployments <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 							<li ng-class="navClass('fiware_instances')" ><a href="#/fiware_instances">FIWARE Instances</a></li>
-							<li ng-class="navClass('deployments')" ><a href="#/deployments">My Deployed Applications</a></li>
+							<li><a href="#/subscribed_resources">My Registered Resources</a></li>
+							<li ng-class="navClass('deployments')" ><a href="#/mydeployments">My Deployed Applications</a></li>
 								</ul>
 						</li>
 							
@@ -32,11 +34,11 @@
 								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'" ><a href="#/users">System Users</a></li>
 								<li><a href="#/apps">Registered Applications</a></li>
 								<li><a href="#/buns">Registered Buns</a></li>
-								<li><a href="#/subscribed_machines">Registered Subscribed Machines</a></li>
-								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"><a href="#/deployments">Application deployments</a></li>
+								<li><a href="#/subscribed_resources">Registered Subscribed Resources</a></li>
+								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"><a href="#/deployments">Registered Application deployments</a></li>
 								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'" class="divider"></li>
 								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"><a href="#/categories">System Categories</a></li>		
-								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"><a href="#">System Machine groups</a></li>
+								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"><a href="#">System resource groups</a></li>
 								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'" class="divider"></li>
 								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"  ><a href="#/deployments">All pending requests</a></li>
 								<li ng-show="loggedinbakeruser.role === 'ROLE_BOSS'"><a href="#">System info</a></li>

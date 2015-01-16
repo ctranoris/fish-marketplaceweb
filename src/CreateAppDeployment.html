@@ -1,0 +1,81 @@
+<div class="page-header" >
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1 id="headerTitle">Create new deployment</h1>
+				<h3>for application: {{newdeployment.baseApplication.name}}</h3>
+				<h4>user: {{newdeployment.owner.username}}</h4>
+
+				<form class="form-horizontal" name="form" role="form" ng-submit="submitNewAppDeployment()" id="addApplicationForm">
+					<div class="form-group">
+						<label for="app.name" class="col-sm-2 control-label">Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  ng-model="newdeployment.name" value="" placeholder="name..." />
+						</div>
+					</div>
+					
+					
+					<div class="form-group">
+						<label for="newdeployment.deployContainers" class="col-sm-2 control-label">Deploy Containers</label>
+						<div class="col-sm-10">							
+							<p class="help-block">Configure deploy containers and their target resources</p>
+										
+								<div class="col-sm-12" role="tabpanel">
+								  <!-- Nav tabs -->
+								  <ul class="nav nav-tabs" role="tablist" >
+								    <li ng-repeat="deploycontainer in newdeployment.deployContainers" role="presentation" ng-class="{'active': isActive(deploycontainer) }">
+								    		<a data-target="{{deploycontainer.name}}" aria-controls="{{deploycontainer.name}}" role="tab" data-toggle="tab" ng-click="activateContainer(deploycontainer)" >{{deploycontainer.name}}</a></li>
+								   </ul>
+								
+								  <!-- Tab panes -->
+								  <div class="col-sm-12 tab-content"  >
+								    <div ng-repeat="deploycontainer in newdeployment.deployContainers" role="tabpanel"  ng-class="{'tab-pane':true, 'active': isActive(deploycontainer) }" id="{{deploycontainer.name}}">
+								    <p>Configure artifacts in {{deploycontainer.name}}</p>								    								   
+								    
+								    Target resource: <select ng-model="targetResource" ng-options="registeredresource.name for registeredresource in registeredresources" ></select>
+								    
+								    
+								    <div class="col-sm-12 deployArtifact shadowed" ng-repeat="da in deploycontainer.deployArtifacts"> 
+								    	<div class="col-sm-12"> 
+								    	<p> <b>{{da.name}}</b>  ( {{da.uuid}} )  
+								    	 </p>
+								    	</div>
+									    <div class="col-sm-12 deployArtifactExtensions" ng-repeat="ext in da.extensions">
+									    	<div class="col-sm-2">	{{ext.name}} </div> 
+									    	<div class="col-sm-10">	 
+									    		<input type="text"  ng-model="ext.value"  /> 
+										    	
+										    	<button popover type="button" class="btn btn-info" data-toggle="popover" title="Value of parameter" data-html="true"
+										    	data-content="Type a <b>static value</b>, or use <pre>$containerID.value</pre> as a reference. For example <pre>$container0.IP</pre>"><i class="fa fa-question " ></i></button>
+										    		
+										    		
+									    	</div> 
+									    </div>
+								    
+								    
+								    </div>
+								    
+								    </div>
+								  
+								  </div>
+								
+								</div>
+								
+								
+
+						</div>
+					</div>
+					
+					
+
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<input class="btn btn-default" type="submit" value="Request deployment" />
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>

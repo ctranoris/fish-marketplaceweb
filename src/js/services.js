@@ -65,9 +65,9 @@ appServices.factory('formDataObject', function() {
 	};
 });
 
-//SubscribedMachine Resource
-appServices.factory('SubscribedMachine', function($resource, APIEndPointService) {
-	return $resource(APIEndPointService.APIURL+"services/api/repo/subscribedmachines/:id", 
+//SubscribedResource Resource
+appServices.factory('SubscribedResource', function($resource, APIEndPointService) {
+	return $resource(APIEndPointService.APIURL+"services/api/repo/subscribedresources/:id", 
 			{ id: '@id' }, {
 	    update: {
 	        method: 'PUT' // this method issues a PUT request
@@ -120,6 +120,27 @@ appServices.factory('Container', function() {
 });
 
 
+appServices.factory('DeployContainer', function() {
+	
+	var container = function(id, aName) {
+	       
+	    this.id = id;
+
+	    this.name = aName;
+	    this.targetResource = {};
+	    this.deployArtifacts = [];
+	 
+	    this.isObject = function(object) {
+	        return object instanceof Object;
+	    };
+	 
+	};
+	
+	return container;
+	
+});
+
+
 appServices.factory('DeployArtifact', function() {
 	
 	var dep = function(id, uuid, name, artifactURL, artifactPackageURL, depextensions) {
@@ -151,6 +172,19 @@ appServices.factory('DeployArtifact', function() {
 	
 	
 });
+
+
+//DeploymentDescriptor Resource
+appServices.factory('DeploymentDescriptor', function($resource, APIEndPointService) {
+	return $resource(APIEndPointService.APIURL+"services/api/repo/deployments/:id", 
+		{id : "@id"	}, {
+		"update" : {
+			method : "PUT"
+		}
+
+	});
+});
+
 
 
 appServices.factory('formDataObject', function() {
@@ -202,5 +236,6 @@ appServices.factory('FIWAREServers', function($resource, APIEndPointService) {
 
 	});
 });
+
 
 
