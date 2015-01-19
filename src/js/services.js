@@ -13,7 +13,7 @@ appServices.factory('APIEndPointService', function() {
 
 //BakerUser Resource
 appServices.factory('BakerUser', function($resource, APIEndPointService) {
-	return $resource(APIEndPointService.APIURL+"services/api/repo/users/:id", 
+	return $resource(APIEndPointService.APIURL+"services/api/repo/admin/users/:id", 
 			{ id: '@id' }, {
 	    update: {
 	        method: 'PUT' // this method issues a PUT request
@@ -37,16 +37,6 @@ appServices.service('popupService',function($window){
 
 
 
-//Category Resource
-appServices.factory('Category', function($resource, APIEndPointService) {
-	return $resource(APIEndPointService.APIURL+"services/api/repo/categories/:id", 
-			{ id: '@id' }, {
-	    update: {
-	        method: 'PUT' // this method issues a PUT request
-        	
-	      }
-	});
-});
 
 
 appServices.factory('formDataObject', function() {
@@ -67,7 +57,7 @@ appServices.factory('formDataObject', function() {
 
 //SubscribedResource Resource
 appServices.factory('SubscribedResource', function($resource, APIEndPointService) {
-	return $resource(APIEndPointService.APIURL+"services/api/repo/subscribedresources/:id", 
+	return $resource(APIEndPointService.APIURL+"services/api/repo/admin/subscribedresources/:id", 
 			{ id: '@id' }, {
 	    update: {
 	        method: 'PUT' // this method issues a PUT request
@@ -75,6 +65,19 @@ appServices.factory('SubscribedResource', function($resource, APIEndPointService
 	      }
 	});
 });
+
+
+//Category Resource
+appServices.factory('AdminCategory', function($resource, APIEndPointService) {
+	return $resource(APIEndPointService.APIURL+"services/api/repo/admin/categories/:id", 
+			{ id: '@id' }, {
+	    update: {
+	        method: 'PUT' // this method issues a PUT request
+        	
+	      }
+	});
+});
+
 
 //Category Resource
 appServices.factory('Category', function($resource, APIEndPointService) {
@@ -99,6 +102,21 @@ appServices.factory('ApplicationMetadata', function($resource, APIEndPointServic
 	});
 	
 });
+
+
+//Admin Apps Resource
+appServices.factory('AdminApplicationMetadata', function($resource, APIEndPointService) {
+	
+	return $resource(APIEndPointService.APIURL+"services/api/repo/admin/apps/:id", 
+			{ id: '@id' }, {				
+		
+		    update: {
+		        method: 'PUT' // this method issues a PUT request      	
+		      	}
+	});
+	
+});
+
 
 appServices.factory('Container', function() {
 	
@@ -176,7 +194,7 @@ appServices.factory('DeployArtifact', function() {
 
 //DeploymentDescriptor Resource
 appServices.factory('DeploymentDescriptor', function($resource, APIEndPointService) {
-	return $resource(APIEndPointService.APIURL+"services/api/repo/deployments/:id", 
+	return $resource(APIEndPointService.APIURL+"services/api/repo/admin/deployments/:id", 
 		{id : "@id"	}, {
 		"update" : {
 			method : "PUT"
@@ -207,6 +225,17 @@ appServices.factory('formDataObject', function() {
 //BakerUser Resource
 appServices.factory('BunMetadata', function($resource, APIEndPointService) {
 	return $resource(APIEndPointService.APIURL+"services/api/repo/buns/:id", 
+		{id : "@id"	}, {
+		"update" : {
+			method : "PUT"
+		}
+
+	});
+});
+
+//BakerUser Resource
+appServices.factory('AdminBunMetadata', function($resource, APIEndPointService) {
+	return $resource(APIEndPointService.APIURL+"services/api/repo/admin/buns/:id", 
 		{id : "@id"	}, {
 		"update" : {
 			method : "PUT"

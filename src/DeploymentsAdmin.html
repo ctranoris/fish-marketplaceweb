@@ -3,8 +3,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<h1>My Deployed Applications</h1>
-				<h3>View and manage deployed applications</h3>
+				<h1>Admin Deployed Applications</h1>
+				<h3>View and manage all deployed applications</h3>
 				<table id="grid1" tr-ng-grid="" class="usersGrid" items="mydeployments" page-items="10"
 					fields="['id', 'name', 'status', 'owner.username', 'baseApplication.name' ]">
 					
@@ -26,6 +26,10 @@
 									<span ng-show="gridItem.status != 'PENDING_ADMIN_AUTH'  " class="label label-info">{{gridItem.status}}</span>
 								</h4>
 								<p>Date created: <strong>{{gridItem.dateCreated| date:'medium'}}</strong></p>
+								<a ng-show="(gridItem.status === 'DENIED') ||  (gridItem.status === 'UNINSTALLED') || (gridItem.status === 'FAILED')   "  
+									class="btn btn-danger" ng-click="deleteDeployment(gridItem, gridItem.id)"><i class="fa fa-trash-o "></i> Delete</a>
+								<a ng-show="gridItem.status === 'PENDING_ADMIN_AUTH'  "  class="btn btn-info" ng-click="authDeployment(gridItem, gridItem.id)"><i class="fa fa-cog "></i> Authorize</a>
+								<a ng-show="gridItem.status === 'PENDING_ADMIN_AUTH'  "  class="btn btn-info" ng-click="denyDeployment(gridItem, gridItem.id)"><i class="fa fa-cog "></i> Deny</a>
 								<a ng-show="gridItem.status === 'INSTALLED'  "  class="btn btn-info" ng-click="uninstallDeployment(gridItem, gridItem.id)"><i class="fa fa-remove "></i> Uninstall</a>
 							</td>
 						</tr>	

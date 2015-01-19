@@ -81,6 +81,9 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 	}).when('/create_app_deployment/:id', {
 		templateUrl : 'CreateAppDeployment.html',
 		controller : 'CreateAppDeploymentController'
+	}).when('/deployments_admin', {
+		templateUrl : 'DeploymentsAdmin.html',
+		controller : 'DeploymentsAdminListController'
 	}).otherwise({
 		redirectTo : '/'
 	});

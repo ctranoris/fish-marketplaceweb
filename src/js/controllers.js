@@ -241,12 +241,12 @@ appControllers.controller('SubscribedResourceEditController', ['$scope', '$route
 //Apps controller
 
 
-appControllers.controller('AppListController', ['$scope','$window','$log', 'ApplicationMetadata', 'popupService','ngDialog',
-                                             	function($scope, $window, $log, ApplicationMetadata, popupService, ngDialog ) {
+appControllers.controller('AppListController', ['$scope','$window','$log', 'AdminApplicationMetadata', 'popupService','ngDialog',
+                                             	function($scope, $window, $log, AdminApplicationMetadata, popupService, ngDialog ) {
                  	
                  	
 
- 	$scope.apps = ApplicationMetadata.query(function() {
+ 	$scope.apps = AdminApplicationMetadata.query(function() {
  		    //console.log($scope.apps);
  		  }); //query() returns all the subscribedresources
  		 
@@ -254,11 +254,11 @@ appControllers.controller('AppListController', ['$scope','$window','$log', 'Appl
  	
  	 $scope.deleteApp = function(gridItem, useridx){
 
- 		$log.debug("Selected to DELETE ApplicationMetadata with id = "+ useridx);
+ 		$log.debug("Selected to DELETE AdminApplicationMetadata with id = "+ useridx);
  		 	
 
- 		 	var app=ApplicationMetadata.get({id:useridx}, function() {
- 			    $log.debug("WILL DELETE ApplicationMetadata with ID "+ app.id);
+ 		 	var app=AdminApplicationMetadata.get({id:useridx}, function() {
+ 			    $log.debug("WILL DELETE AdminApplicationMetadata with ID "+ app.id);
  			    
  		        if(popupService.showPopup('Really delete Application "'+app.name+'" ?')){
  				 	
@@ -274,10 +274,10 @@ appControllers.controller('AppListController', ['$scope','$window','$log', 'Appl
 }]);
 
 appControllers.controller('AppAddController', function($scope, $location,
-		ApplicationMetadata, BakerUser, $rootScope, $http,formDataObject, Category,$filter,APIEndPointService, Container, DeployArtifact, BunMetadata) {
+		AdminApplicationMetadata, BakerUser, $rootScope, $http,formDataObject, Category,$filter,APIEndPointService, Container, DeployArtifact, BunMetadata) {
 
 	
-	$scope.app = new ApplicationMetadata();
+	$scope.app = new AdminApplicationMetadata();
 	$scope.app.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
 
 	$scope.app.containers=[];//clear everything
@@ -399,7 +399,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 		 
 		return $http({
 			method : 'POST',
-			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.app.owner.id+'/apps/',
+			url : APIEndPointService.APIURL+'services/api/repo/admin/apps/',
 			headers : {
 				'Content-Type' : undefined
 			},
@@ -453,7 +453,7 @@ appControllers.controller('AppAddController', function($scope, $location,
 		 
 		return $http({
 			method : 'POST',
-			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.app.owner.id+'/apps/',
+			url : APIEndPointService.APIURL+'services/api/repo/admin/apps/',
 			headers : {
 				'Content-Type' : 'multipart/form-data'
 			},
@@ -566,8 +566,8 @@ appControllers.directive('fileUpload', function () {
 });
 
 appControllers.controller('AppEditController', ['$scope', '$route', '$routeParams', '$location', 
-                                                'ApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService', 'BunMetadata', 'Container', 'DeployArtifact',
-     function( $scope, $route, $routeParams, $location, ApplicationMetadata, $anchorScroll,
+                                                'AdminApplicationMetadata', '$anchorScroll','$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService', 'BunMetadata', 'Container', 'DeployArtifact',
+     function( $scope, $route, $routeParams, $location, AdminApplicationMetadata, $anchorScroll,
     		 $http,formDataObject, cfpLoadingBar, Category, $filter, APIEndPointService, BunMetadata, Container, DeployArtifact){
 	
 	
@@ -632,7 +632,7 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 		 	
 			return $http({
 				method : 'PUT',
-				url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.app.owner.id+'/apps/'+$routeParams.id,
+				url : APIEndPointService.APIURL+'services/api/repo/admin/apps/'+$routeParams.id,
 				headers : {
 					'Content-Type' : undefined
 				},
@@ -677,7 +677,7 @@ appControllers.controller('AppEditController', ['$scope', '$route', '$routeParam
 	
 
     $scope.loadApp=function(cats){
-    	var myapp = ApplicationMetadata.get({id:$routeParams.id}, function() {
+    	var myapp = AdminApplicationMetadata.get({id:$routeParams.id}, function() {
     		
     		var categoriesToPush=[];
     		angular.forEach(myapp.categories, function(myappcateg, myappcategkey) {
@@ -833,9 +833,9 @@ appControllers.controller('CategoriesListController', ['$scope','$window','$log'
                  	 
 }]);
 
-appControllers.controller('CategoryAddController',function($scope, $location, Category){
+appControllers.controller('CategoryAddController',function($scope, $location, AdminCategory){
 
-    $scope.cat=new Category();
+    $scope.cat=new AdminCategory();
 
     $scope.addCategory=function(){
         $scope.cat.$save(function(){
@@ -845,8 +845,8 @@ appControllers.controller('CategoryAddController',function($scope, $location, Ca
 
 });
 
-appControllers.controller('CategoryEditController', ['$scope', '$route', '$routeParams', '$location', 'Category', '$anchorScroll',
-        function( $scope, $route, $routeParams, $location, Category, $anchorScroll){
+appControllers.controller('CategoryEditController', ['$scope', '$route', '$routeParams', '$location', 'AdminCategory', '$anchorScroll',
+        function( $scope, $route, $routeParams, $location, AdminCategory, $anchorScroll){
 
 
     //console.log("WILL EDIT Category with ID "+$routeParams.id);
@@ -858,7 +858,7 @@ appControllers.controller('CategoryEditController', ['$scope', '$route', '$route
     };
 
     $scope.loadCategory=function(){
-        $scope.cat=Category.get({id:$routeParams.id});
+        $scope.cat=AdminCategory.get({id:$routeParams.id});
     };
 
     $scope.loadCategory();
@@ -920,11 +920,11 @@ appControllers.controller('AppsMarketplaceController', ['$scope','$window','$log
 
 
 
-appControllers.controller('BunListController', ['$scope','$window','$log', 'BunMetadata', 'popupService','ngDialog',
-                                             	function($scope, $window, $log, BunMetadata, popupService, ngDialog ) {
+appControllers.controller('BunListController', ['$scope','$window','$log', 'AdminBunMetadata', 'popupService','ngDialog',
+                                             	function($scope, $window, $log, AdminBunMetadata, popupService, ngDialog ) {
                  	
                  	
- 	$scope.buns= BunMetadata.query(function() {
+ 	$scope.buns= AdminBunMetadata.query(function() {
  		    //console.log($scope.apps);
  		  }); //query() returns all the subscribedresources
  		 
@@ -932,10 +932,10 @@ appControllers.controller('BunListController', ['$scope','$window','$log', 'BunM
  	
  	 $scope.deleteBun = function(gridItem, useridx){
 
- 		$log.debug("Selected to DELETE BunMetadata with id = "+ useridx);
+ 		$log.debug("Selected to DELETE AdminBunMetadata with id = "+ useridx);
  		 	
 
- 		 	var bun=BunMetadata.get({id:useridx}, function() {
+ 		 	var bun=AdminBunMetadata.get({id:useridx}, function() {
  			    $log.debug("WILL DELETE BunMetadatawith ID "+ bun.id);
  			    
  		        if(popupService.showPopup('Really delete Bun "'+bun.name+'" ?')){
@@ -953,9 +953,9 @@ appControllers.controller('BunListController', ['$scope','$window','$log', 'BunM
 
 
 appControllers.controller('BunAddController', function($scope, $location,
-		BunMetadata, BakerUser, $rootScope, $http,formDataObject, Category, $filter, APIEndPointService) {
+		AdminBunMetadata, BakerUser, $rootScope, $http,formDataObject, Category, $filter, APIEndPointService) {
 	
-	$scope.bun = new BunMetadata();
+	$scope.bun = new AdminBunMetadata();
 	$scope.bun.owner = $rootScope.loggedinbakeruser;//BakerUser.get({id:$rootScope.loggedinbakeruser.id});
 	$scope.bun.extensions=[];
 	
@@ -1006,7 +1006,7 @@ appControllers.controller('BunAddController', function($scope, $location,
 		 
 		return $http({
 			method : 'POST',
-			url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.bun.owner.id+'/buns/',
+			url : APIEndPointService.APIURL+'services/api/repo/admin/buns/',
 			headers : {
 				'Content-Type' : 'multipart/form-data'
 			},
@@ -1026,9 +1026,10 @@ appControllers.controller('BunAddController', function($scope, $location,
 
 
 
-appControllers.controller('BunEditController', ['$scope', '$route', '$routeParams', '$location', 'BunMetadata', '$anchorScroll',
+appControllers.controller('BunEditController', ['$scope', '$route', '$routeParams', '$location', 'AdminBunMetadata', '$anchorScroll',
                                                 '$http', 'formDataObject', 'cfpLoadingBar', 'Category', '$filter', 'APIEndPointService',
-     function( $scope, $route, $routeParams, $location, BunMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, Category, $filter,APIEndPointService){
+     function( $scope, $route, $routeParams, $location, AdminBunMetadata, $anchorScroll, $http,formDataObject, cfpLoadingBar, 
+    		 Category, $filter,APIEndPointService){
 
 	
 	
@@ -1056,7 +1057,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 		 
 			return $http({
 				method : 'PUT',
-				url : APIEndPointService.APIURL+'services/api/repo/users/'+$scope.bun.owner.id+'/buns/'+$routeParams.id,
+				url : APIEndPointService.APIURL+'services/api/repo/admin/buns/'+$routeParams.id,
 				headers : {
 					'Content-Type' : 'multipart/form-data'
 				},
@@ -1074,7 +1075,7 @@ appControllers.controller('BunEditController', ['$scope', '$route', '$routeParam
 	
 
     $scope.loadBun=function(cats){
-    	var mybun = BunMetadata.get({id:$routeParams.id}, function() {
+    	var mybun = AdminBunMetadata.get({id:$routeParams.id}, function() {
 
     		var categoriesToPush=[];
 	   	 	angular.forEach(mybun.categories, function(mybuncateg, mybuncategkey) {
@@ -1235,23 +1236,6 @@ appControllers.controller('MyDeploymentsListController', ['$scope','$window','$l
  		 
  	
  	
- 	 $scope.deleteDeployment = function(gridItem, bunidx){
-
- 		$log.debug("Selected to DELETE Deployment with id = "+ bunidx);
- 		 	
-
- 		 	var dep=DeploymentDescriptor.get({id:bunidx}, function() {
- 			    $log.debug("WILL DELETE DeploymentDescriptor ID "+ dep.id);
- 			    
- 		        if(popupService.showPopup('Really delete Deployment "'+dep.name+'" ?')){
- 				 	
- 		        	dep.$delete(function(){
- 		    			$scope.mydeployments.splice($scope.mydeployments.indexOf(gridItem),1)
- 		            });
- 		        
- 		        }
- 		 	});
- 	    }
  	          	
                  	 
 }]);
@@ -1316,7 +1300,7 @@ appControllers.controller('CreateAppDeploymentController', ['$scope', '$route', 
 		 
 		return $http({
 			method : 'POST',
-			url : APIEndPointService.APIURL+'services/api/repo/deployments/',
+			url : APIEndPointService.APIURL+'services/api/repo/admin/deployments/',
 			headers : {
 				'Content-Type' : 'application/json'
 			},
@@ -1334,3 +1318,90 @@ appControllers.controller('CreateAppDeploymentController', ['$scope', '$route', 
  	          	
                  	 
 }]);
+
+
+
+appControllers.controller('DeploymentsAdminListController', ['$scope','$window','$log', 'DeploymentDescriptor', 'popupService','ngDialog','$http', 'APIEndPointService',
+                                             	function($scope, $window, $log, DeploymentDescriptor, popupService, ngDialog, $http, APIEndPointService ) {
+                 	
+                 	
+ 	$scope.mydeployments= DeploymentDescriptor.query(function() {
+ 		    
+ 		  }); 
+ 		 
+ 	
+ 	 $scope.deleteDeployment = function(gridItem, depidx){
+
+ 		$log.debug("Selected to DELETE Deployment with id = "+ depidx);
+
+ 		 	var dep=DeploymentDescriptor.get({id:depidx}, function() {
+ 		 		
+ 			    
+ 		        if(popupService.showPopup('Really delete Deployment "'+dep.name+'" ?')){
+ 				 	
+ 		        	dep.$delete(function(){
+
+ 		 			    $log.debug("DELETED DeploymentDescriptor ID "+ dep.id);
+ 		    			$scope.mydeployments.splice( $scope.mydeployments.indexOf(gridItem),1  );
+ 		    			
+ 		            }, function(error) {
+ 		            	$window.alert("Cannot delete: "+error.data);
+ 		            });
+ 		        
+ 		        }
+ 		 	});
+ 	    };
+ 	    
+ 	    
+ 	    
+ 	   
+ 	   putAction   = function(action, deployment, depidx){
+ 		  $log.debug("Selected to "+action+" Deployment with id = "+ depidx);
+	 		
+	 		return $http({
+				method : 'PUT',
+				url : APIEndPointService.APIURL+'services/api/repo/admin/deployments/'+depidx+'?action='+action,
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+
+	            data: deployment
+				
+	            
+			}).success(function(data, status, headers, config) {			
+
+//		        console.log("data: " + data);
+//		        console.log("data: " + JSON.stringify(data));
+//		        console.log("status: " + status);
+//		        console.log("headers: " + headers);
+//		        console.log("config: " + config);
+		        var d = JSON.parse(  JSON.stringify(data)  );
+		        
+		        $scope.mydeployments[$scope.mydeployments.indexOf(deployment)] = d;
+		        		
+		        
+			}).
+	        error(function (data, status, headers, config) {
+	            alert("failed to communicate! "+status);
+	        });
+ 	   }
+ 	    
+ 	    
+ 	   $scope.authDeployment = function(deployment, depidx){
+ 		  putAction('AUTH',deployment, depidx ); 
+ 		   
+ 	   }
+ 	   
+ 	  $scope.denyDeployment = function(deployment, depidx){
+ 		 putAction('DENY',deployment, depidx ); 
+	   }
+ 	   
+ 	  $scope.uninstallDeployment = function(deployment, depidx){
+  		 putAction('UNINSTALL',deployment, depidx ); 
+	 	
+	   }
+ 	          	
+                 	 
+}]);
+
+
