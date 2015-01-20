@@ -19,7 +19,7 @@
 						<li ng-show="loggedIn && ( (loggedinbakeruser.role === 'ROLE_DEVELOPER')|| (loggedinbakeruser.role === 'ROLE_BOSS') )" ng-class="navClass('bun_marketplace')" ><a href="#/bun_marketplace">Buns</a></li>
 						
 						
-						<li ng-show="loggedIn && ( (loggedinbakeruser.role === 'ROLE_PLATFORM_PROVIDER')|| (loggedinbakeruser.role === 'ROLE_BOSS') )" class="dropdown">
+						<li ng-show="loggedIn && ( (loggedinbakeruser.role === 'SERVICE_PLATFORM_PROVIDER')|| (loggedinbakeruser.role === 'ROLE_BOSS') )" class="dropdown">
 							<a class="dropdown-toggle"	href="" data-toggle="dropdown">Deployments <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 							<li ng-class="navClass('fiware_instances')" ><a href="#/fiware_instances">FIWARE Instances</a></li>
