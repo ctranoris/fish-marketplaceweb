@@ -1,0 +1,42 @@
+<div class="page-header">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h1>Baker Client</h1>
+			</div>
+
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+			<a class="btn btn-success btn-lg" data-toggle="modal" ng-href="/downloads/bakerclient.tar.gz"> <i class="fa fa-download fa-2x pull-left"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;Download&nbsp;&nbsp;&nbsp;&nbsp;</b><br><small>Version: 1.0.0<br>(Linux OS)</small></a>
+			</div>	
+			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+				Baker Client is a small utility used in client target machines to register them to the marketplace. 
+				Baker Client can manage the requested applications by the marketplace to the target machine. 
+			
+			</div>
+		</div>		
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h2>Starting Baker Client</h2>
+			<p>Use the following command to start the client manually:</p> 
+			<pre>java -jar '-Dmarketplace_api_endpoint=http://83.212.106.218:8080/baker/services/api/repo' '-Dbaker_client_owner_id=34' '-Dbaker_client_owner_username=dev' '-Dbaker_client_host_fqdn=example.com' target/gr.upatras.ece.nam.baker.client-0.0.1-SNAPSHOT.war
+					</pre>
+			
+			
+			<p>Replace baker_client_owner_id with your Marketplace user ID</p>
+			<p>Replace baker_client_owner_username with your Marketplace username</p>
+			<p>Replace baker_client_host_fqdn with your server FQDN</p>
+
+			<p>After a few minutes of operation, Baker Client will successfully register itself to the marketplace, under your account. 
+			You can see it if is registered successfully by  visiting your <a href="#/subscribed_resources">Registered Resources</a></p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h2>Using Baker Client</h2>
+			<p>By default baker client listens on port 13001 for local requests. To manage it, open a browser and go to http://localhost:13001</p> 
+			
+			</div>
+		</div>
+	</div>
+</div>

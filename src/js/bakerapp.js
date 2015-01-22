@@ -84,6 +84,9 @@ app.config(function($routeProvider, $locationProvider, $anchorScrollProvider, cf
 	}).when('/deployments_admin', {
 		templateUrl : 'DeploymentsAdmin.html',
 		controller : 'DeploymentsAdminListController'
+	}).when('/baker_client', {
+		templateUrl : 'BakerClient.html',
+		controller : 'BakerClientViewController'
 	}).otherwise({
 		redirectTo : '/'
 	});

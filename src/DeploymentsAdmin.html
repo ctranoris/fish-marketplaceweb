@@ -21,12 +21,21 @@
 						<tr>
 							
 							<td nowrap="nowrap" >
-								<h4>									
+								<p>Date created: <strong>{{gridItem.dateCreated| date:'medium'}}</strong></p>
+								<h4>Status:									
 									<span ng-show="gridItem.status === 'PENDING_ADMIN_AUTH'  " class="label label-warning">Pending Approval</span>
 									<span ng-show="gridItem.status != 'PENDING_ADMIN_AUTH'  " class="label label-info">{{gridItem.status}}</span>
 								</h4>
-								<p>Date created: <strong>{{gridItem.dateCreated| date:'medium'}}</strong></p>
-								<a ng-show="(gridItem.status === 'DENIED') ||  (gridItem.status === 'UNINSTALLED') || (gridItem.status === 'FAILED')   "  
+								
+								<small><div ng-repeat="container in gridItem.deployContainers" style="background-color: rgb(121, 126, 159); color: white; padding: 5px;">
+									<b>{{container.name}}</b><br>
+									<div ng-repeat="da in container.deployArtifacts" style="background-color: white; color: black; padding: 5px;">
+										<span >{{da.name}} : <b>{{da.status}}</b> </span>
+										</div>
+								</div></small>
+								
+								<p>&nbsp;</p>
+								<a  
 									class="btn btn-danger" ng-click="deleteDeployment(gridItem, gridItem.id)"><i class="fa fa-trash-o "></i> Delete</a>
 								<a ng-show="gridItem.status === 'PENDING_ADMIN_AUTH'  "  class="btn btn-info" ng-click="authDeployment(gridItem, gridItem.id)"><i class="fa fa-cog "></i> Authorize</a>
 								<a ng-show="gridItem.status === 'PENDING_ADMIN_AUTH'  "  class="btn btn-info" ng-click="denyDeployment(gridItem, gridItem.id)"><i class="fa fa-cog "></i> Deny</a>

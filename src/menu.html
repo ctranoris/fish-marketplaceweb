@@ -48,9 +48,9 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li ng-show="!loggedIn"><a href="#/login" >Sign In</a></li>
 					<li ng-show="loggedIn" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown">{{loggedinbakeruser.name}} ({{loggedinbakeruser.role}}) <span class="caret"></span></a>
+						data-toggle="dropdown">{{loggedinbakeruser.name}} ({{loggedinbakeruser.role}}, id: {{loggedinbakeruser.id}}) <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Details</a></li>
+							<li><a href="#baker_client">Baker Client</a></li>
 							<li class="divider"></li>
 							<li><a href="#/logout">Logout</a></li>
 						</ul>
