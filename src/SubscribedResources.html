@@ -21,6 +21,7 @@
 					<tbody>
 						<tr>
 							<td nowrap="nowrap">
+								<p>Last update: <strong>{{gridItem.lastUpdate| date:'medium'}}</strong></p>
 								<a class="btn btn-danger" ng-click="deleteSubscribedResource(gridItem, gridItem.id, gridItem.url)"><i class="fa fa-trash-o "></i></a>
 								<a class="btn btn-primary" ng-href="#/edit_subscribed_resource/{{gridDisplayItem.id}}"><i class="fa fa-pencil-square-o "></i></a>									
 								<a class="btn btn-info" ng-click="clickToOpen(gridItem, gridItem.id, gridItem.url)""><i class="fa fa-info-circle "></i></a>

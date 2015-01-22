@@ -29,11 +29,13 @@
 								
 								<small><div ng-repeat="container in gridItem.deployContainers" style="background-color: rgb(121, 126, 159); color: white; padding: 5px;">
 									<b>{{container.name}}</b><br>
+									<small>({{container.targetResource.url}})</small><br>
 									<div ng-repeat="da in container.deployArtifacts" style="background-color: white; color: black; padding: 5px;">
 										<span >{{da.name}} : <b>{{da.status}}</b> </span>
 										</div>
 								</div></small>
-								
+								<h4></h4>
+								<a ng-show="gridItem.status != 'INSTALLED'  "  class="btn btn-danger" ng-click="deleteDeployment(gridItem, gridItem.id)"><i class="fa fa-trash-o "></i> Delete</a>
 								<a ng-show="gridItem.status === 'INSTALLED'  "  class="btn btn-info" ng-click="uninstallDeployment(gridItem, gridItem.id)"><i class="fa fa-remove "></i> Uninstall</a>
 							</td>
 						</tr>	

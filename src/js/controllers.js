@@ -1226,15 +1226,75 @@ appControllers.controller('FiwareInstancesController', ['$scope','$window','$log
 
 //////////Deployments controller
 
-appControllers.controller('MyDeploymentsListController', ['$scope','$window','$log', 'DeploymentDescriptor', 'popupService','ngDialog',
-                                             	function($scope, $window, $log, DeploymentDescriptor, popupService, ngDialog ) {
+appControllers.controller('MyDeploymentsListController', ['$scope','$window','$log', 'DeploymentDescriptor', 'popupService','ngDialog','$http', 'APIEndPointService',
+                                             	function($scope, $window, $log, DeploymentDescriptor, popupService, ngDialog, $http, APIEndPointService ) {
                  	
                  	
  	$scope.mydeployments= DeploymentDescriptor.query(function() {
  		    
  		  }); 
- 		 
  	
+
+	 $scope.deleteDeployment = function(gridItem, depidx){
+
+		$log.debug("Selected to DELETE Deployment with id = "+ depidx);
+
+		 	var dep=DeploymentDescriptor.get({id:depidx}, function() {
+		 		
+			    
+		        if(popupService.showPopup('Really delete Deployment "'+dep.name+'" ?')){
+				 	
+		        	dep.$delete(function(){
+
+		 			    $log.debug("DELETED DeploymentDescriptor ID "+ dep.id);
+		    			$scope.mydeployments.splice( $scope.mydeployments.indexOf(gridItem),1  );
+		    			
+		            }, function(error) {
+		            	$window.alert("Cannot delete: "+error.data);
+		            });
+		        
+		        }
+		 	});
+	    };
+	    
+ 		 
+ 	  putAction   = function(action, deployment, depidx){
+ 		  $log.debug("Selected to "+action+" Deployment with id = "+ depidx);
+	 		
+	 		return $http({
+				method : 'PUT',
+				url : APIEndPointService.APIURL+'services/api/repo/admin/deployments/'+depidx+'?action='+action,
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+
+	            data: deployment
+				
+	            
+			}).success(function(data, status, headers, config) {			
+
+//		        console.log("data: " + data);
+//		        console.log("data: " + JSON.stringify(data));
+//		        console.log("status: " + status);
+//		        console.log("headers: " + headers);
+//		        console.log("config: " + config);
+		        var d = JSON.parse(  JSON.stringify(data)  );
+		        
+		        $scope.mydeployments[$scope.mydeployments.indexOf(deployment)] = d;
+		        		
+		        
+			}).
+	        error(function (data, status, headers, config) {
+	            alert("failed to communicate! "+status);
+	        });
+ 	   }
+ 	    
+ 	    
+ 	   
+ 	  $scope.uninstallDeployment = function(deployment, depidx){
+  		 putAction('UNINSTALL',deployment, depidx ); 
+	 	
+	   }
  	
  	          	
                  	 
